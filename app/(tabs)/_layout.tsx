@@ -41,6 +41,7 @@ export default function TabLayout() {
 				name="locations"
 				options={{
 					title: "Місця",
+					headerShadowVisible: false,
 					tabBarIcon: ({ color }) => <TabBarIconFA6 name="location-dot" color={color} />,
 					headerRight: () => (
 						<Link href="/modal" asChild>

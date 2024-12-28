@@ -1,14 +1,43 @@
-import { StyleSheet } from "react-native";
+import { Button, FlatList, StyleSheet } from "react-native";
 
-import EditScreenInfo from "@/components/EditScreenInfo";
 import { Text, View } from "@/components/Themed";
 
+import { useLocationStore } from "@/logic/store/useLocationStore";
+import { useState } from "react";
+import InputTextThemed from "@/components/common/InputTextThemed";
+
 export default function LocationsScreen() {
+	const { locations, addLocation, removeLocation } = useLocationStore();
+
+	const [newLocationTitle, setNewLocationTitle] = useState<string>("");
+
+	const handleAddLocation = () => {
+		if (newLocationTitle) {
+			const newLocation = { id: Date.now(), title: newLocationTitle };
+			addLocation(newLocation);
+			setNewLocationTitle("");
+		}
+	};
+
+	const handleRemoveLocation = (id: number) => {
+		removeLocation(id);
+	};
+
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>List of locations</Text>
-			<View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-			<EditScreenInfo path="app/(tabs)/locations.tsx" />
+			<View style={styles.editForm}>
+				<InputTextThemed style={styles.input} onChangeText={setNewLocationTitle} value={newLocationTitle} />
+				<Button title="Зберегти" onPress={handleAddLocation} />
+			</View>
+			<FlatList
+				data={locations}
+				renderItem={({ item }) => (
+					<View style={styles.listItem}>
+						<Text style={styles.listItemTitle}>{item.title}</Text>
+						<Button title="Видалити" onPress={() => handleRemoveLocation(item.id)} />
+					</View>
+				)}
+			/>
 		</View>
 	);
 }
@@ -19,13 +48,18 @@ const styles = StyleSheet.create({
 		alignItems: "center",
 		justifyContent: "center",
 	},
-	title: {
-		fontSize: 20,
-		fontWeight: "bold",
+	editForm: {
+		display: "flex",
+		flexDirection: "row",
 	},
-	separator: {
-		marginVertical: 30,
-		height: 1,
-		width: "80%",
+	input: {
+		width: "70%",
+	},
+	listItem: {
+		flexDirection: "row",
+		alignItems: "center",
+	},
+	listItemTitle: {
+		fontSize: 18,
 	},
 });
