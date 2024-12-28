@@ -1,5 +1,6 @@
 import React from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
 
@@ -8,8 +9,12 @@ import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: { name: React.ComponentProps<typeof FontAwesome>["name"]; color: string }) {
+function TabBarIconFA(props: { name: React.ComponentProps<typeof FontAwesome>["name"]; color: string }) {
 	return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+}
+
+function TabBarIconFA6(props: { name: React.ComponentProps<typeof FontAwesome6>["name"]; color: string }) {
+	return <FontAwesome6 size={28} style={{ marginBottom: -3 }} {...props} />;
 }
 
 export default function TabLayout() {
@@ -27,14 +32,22 @@ export default function TabLayout() {
 			<Tabs.Screen
 				name="index"
 				options={{
-					title: "Tab One",
-					tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+					title: "Вибране",
+					tabBarIcon: ({ color }) => <TabBarIconFA name="bookmark" color={color} />,
+					headerShown: false,
+				}}
+			/>
+			<Tabs.Screen
+				name="locations"
+				options={{
+					title: "Місця",
+					tabBarIcon: ({ color }) => <TabBarIconFA6 name="location-dot" color={color} />,
 					headerRight: () => (
 						<Link href="/modal" asChild>
 							<Pressable>
 								{({ pressed }) => (
 									<FontAwesome
-										name="info-circle"
+										name="plus"
 										size={25}
 										color={Colors[colorScheme ?? "light"].text}
 										style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
@@ -46,10 +59,17 @@ export default function TabLayout() {
 				}}
 			/>
 			<Tabs.Screen
-				name="two"
+				name="drones"
 				options={{
-					title: "Tab Two",
-					tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+					title: "Дрони",
+					tabBarIcon: ({ color }) => <TabBarIconFA6 name="dove" color={color} />,
+				}}
+			/>
+			<Tabs.Screen
+				name="properties"
+				options={{
+					title: "Параметри",
+					tabBarIcon: ({ color }) => <TabBarIconFA6 name="clipboard-list" color={color} />,
 				}}
 			/>
 		</Tabs>
