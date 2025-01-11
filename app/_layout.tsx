@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
+import { initTables } from "@/logic/repo/initDB";
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -26,6 +27,16 @@ export default function RootLayout() {
 		SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
 		...FontAwesome.font,
 	});
+
+	useEffect(() => {
+		initTables()
+			.then(() => {
+				console.info("Tables was initialised");
+			})
+			.catch((error) => {
+				console.error("Failed to initialise DB tables", error);
+			});
+	}, []);
 
 	// Expo Router uses Error Boundaries to catch errors in the navigation tree.
 	useEffect(() => {

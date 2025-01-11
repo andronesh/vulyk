@@ -3,18 +3,21 @@ import { Button, FlatList, StyleSheet } from "react-native";
 import { Text, View } from "@/components/Themed";
 
 import { useLocationStore } from "@/logic/store/useLocationStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputTextThemed from "@/components/common/InputTextThemed";
 
 export default function LocationsScreen() {
-	const { locations, addLocation, removeLocation } = useLocationStore();
+	const { locations, loadLocations, addLocation, removeLocation } = useLocationStore();
 
 	const [newLocationTitle, setNewLocationTitle] = useState<string>("");
 
+	useEffect(() => {
+		loadLocations();
+	}, []);
+
 	const handleAddLocation = () => {
 		if (newLocationTitle) {
-			const newLocation = { id: Date.now(), title: newLocationTitle };
-			addLocation(newLocation);
+			addLocation(newLocationTitle);
 			setNewLocationTitle("");
 		}
 	};
