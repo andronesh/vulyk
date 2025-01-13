@@ -27,7 +27,7 @@ export default function MarkerCreateForm(props: Props) {
 			window.alert(`Поле "почати з" має бути більше 99`); // TODO show it as message inside form
 			return;
 		}
-		console.info("save marker", newMarkerData);
+		props.onCreate(newMarkerData.title, newMarkerData.startNumber);
 	};
 
 	return (

@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import MarkerCreateForm from "./MarkerCreateForm";
+import { createMarker } from "@/logic/repo/markersRepo";
 
 type Props = {
-	onCreate: (title: string, startNumber: number) => void;
+	onCreated: () => void;
 	className?: string;
 };
 
@@ -15,8 +16,15 @@ export default function MarkersPanelHeader(props: Props) {
 		setInCreateMode((prevInCreateMode) => !prevInCreateMode);
 	};
 
-	const createMarker = (title: string, startNumber: number) => {
-		console.info(`Create marker with title="${title}" and startNumber=${startNumber}`);
+	const doCreateMarker = async (title: string, startNumber: number) => {
+		try {
+			await createMarker(title, startNumber);
+			toggleCreateMode();
+			props.onCreated();
+		} catch (error) {
+			console.error(`Failed to create marker with title=${title} and startNumber=${startNumber}`, error);
+			window.alert(error); //TODO beautify
+		}
 	};
 
 	return (
@@ -32,7 +40,7 @@ export default function MarkersPanelHeader(props: Props) {
 					</span>
 				)}
 			</div>
-			{inCreateMode && <MarkerCreateForm onCreate={createMarker} onCancel={toggleCreateMode} />}
+			{inCreateMode && <MarkerCreateForm onCreate={doCreateMarker} onCancel={toggleCreateMode} />}
 		</div>
 	);
 }
