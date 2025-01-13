@@ -4,13 +4,16 @@ import { MarkerEntity } from "@/utils/db/schema";
 import MarkersPanelHeader from "./MarkersPanelHeader";
 import { useEffect, useState } from "react";
 import { listAllMarkers } from "@/logic/repo/markersRepo";
+import MarkerChip from "./MarkerChip";
 
 type Props = {
+	onMarkerSelected: (marker: MarkerEntity) => void;
 	className?: string;
 };
 
 export default function MarkersPanel(props: Props) {
 	const [markers, setMarkers] = useState<MarkerEntity[]>([]);
+	const [selectedMarker, setSelectedMarker] = useState<MarkerEntity | undefined>();
 
 	useEffect(() => {
 		refreshMarkersList();
@@ -25,14 +28,24 @@ export default function MarkersPanel(props: Props) {
 			});
 	};
 
+	const selectMarker = (marker: MarkerEntity) => {
+		setSelectedMarker(marker);
+		props.onMarkerSelected(marker);
+	};
+
 	return (
 		<div className={`${props.className}`}>
 			<MarkersPanelHeader onCreated={refreshMarkersList} />
-			{markers.map((marker) => (
-				<div key={marker.id}>
-					{marker.title}:{marker.lastNumber}
-				</div>
-			))}
+			<div className="flex flex-row flex-wrap">
+				{markers.map((marker) => (
+					<MarkerChip
+						key={marker.id}
+						marker={marker}
+						isSelected={selectedMarker?.id === marker.id}
+						onClick={selectMarker}
+					/>
+				))}
+			</div>
 		</div>
 	);
 }
