@@ -22,7 +22,7 @@ export default function DronesPanelHeader(props: Props) {
 	const doCreateDrone = async (markerNumber: string, comment?: string) => {
 		try {
 			await createDrone(props.marker.title, markerNumber, comment);
-			if (props.marker.lastNumber) {
+			if (props.marker.autoInc) {
 				updateMarkerLastNumber(props.marker.id!, +markerNumber); // TODO do it in transaction
 				// TODO: update lastNumber inside selected marker model (probably using some state manager)
 			}

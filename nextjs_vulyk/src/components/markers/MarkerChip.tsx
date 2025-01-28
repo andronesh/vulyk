@@ -17,7 +17,8 @@ export default function MarkerChip(props: Props) {
 			} text-white hover:cursor-pointer hover:font-bold hover:bg-meadow-600 hover:text-military-600 duration-300`}
 			onClick={() => props.onClick(props.marker)}
 		>
-			{props.marker.title}:{props.marker.lastNumber}
+			{props.marker.title}
+			{props.marker.lastNumber ? ":" + props.marker.lastNumber : ""}
 		</div>
 	);
 }

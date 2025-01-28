@@ -5,9 +5,10 @@ import InputTextLabeled from "../common/InputTextLabeled";
 import ButtonLoading from "../common/ButtonLoading";
 import { Marker } from "./types";
 import ButtonGhost from "../common/ButtonGhost";
+import InputCheckbox from "../common/InputCheckbox";
 
 type Props = {
-	onCreate: (title: string, startNumber: number) => void;
+	onCreate: (title: string, autoInc: boolean, startNumber: number | null) => void;
 	onCancel: () => void;
 	className?: string;
 };
@@ -15,6 +16,7 @@ type Props = {
 export default function MarkerCreateForm(props: Props) {
 	const [newMarkerData, setNewMarkerData] = useState<Marker>({
 		title: "",
+		autoInc: false,
 		startNumber: 111,
 	});
 
@@ -23,16 +25,20 @@ export default function MarkerCreateForm(props: Props) {
 			window.alert(`Поле "скорочення" не має бути пустим`); // TODO show it as message inside form
 			return;
 		}
-		if (newMarkerData.startNumber < 100) {
+		if (newMarkerData.autoInc && (newMarkerData.startNumber === null || newMarkerData.startNumber < 100)) {
 			window.alert(`Поле "почати з" має бути більше 99`); // TODO show it as message inside form
 			return;
 		}
-		props.onCreate(newMarkerData.title, newMarkerData.startNumber);
+		props.onCreate(
+			newMarkerData.title,
+			newMarkerData.autoInc,
+			newMarkerData.autoInc ? newMarkerData.startNumber : null,
+		);
 	};
 
 	return (
 		<div className="flex flex-col p-3 mt-3 rounded dark:bg-military-600">
-			<div className="flex flex-row">
+			<div className="flex flex-col">
 				<InputTextLabeled
 					label="скорочення"
 					name="title"
@@ -40,28 +46,39 @@ export default function MarkerCreateForm(props: Props) {
 					placeholder="AAA"
 					onChange={(event) => {
 						setNewMarkerData((prevData) => {
-							console.info(prevData);
 							return { ...prevData, title: event.target.value };
 						});
 					}}
-					className="mr-3"
 				/>
-				<InputTextLabeled
-					label="почати з"
-					name="startNumber"
-					value={newMarkerData.startNumber.toString()}
-					placeholder="111"
-					onChange={(event) => {
-						const newValue = event.target.value;
-						if (isNaN(+newValue)) {
-							window.alert(`"Почати з" повинен бути числом від 100`); // TODO show it as message inside form
-						} else {
-							setNewMarkerData((prevData) => {
-								return { ...prevData, startNumber: +newValue };
-							});
-						}
+				<InputCheckbox
+					label={"автонумерація"}
+					name={"autoInc"}
+					value={newMarkerData.autoInc}
+					onChange={(event: any) => {
+						setNewMarkerData((prevData) => {
+							return { ...prevData, autoInc: event.target.checked };
+						});
 					}}
+					className="py-3"
 				/>
+				{newMarkerData.autoInc && (
+					<InputTextLabeled
+						label="стартовий номер"
+						name="startNumber"
+						value={newMarkerData.startNumber ? newMarkerData.startNumber.toString() : ""}
+						placeholder="111"
+						onChange={(event) => {
+							const newValue = event.target.value;
+							if (isNaN(+newValue)) {
+								window.alert(`"стартовий номер" повинен бути числом від 100`); // TODO show it as message inside form
+							} else {
+								setNewMarkerData((prevData) => {
+									return { ...prevData, startNumber: +newValue };
+								});
+							}
+						}}
+					/>
+				)}
 			</div>
 			<div className="flex flex-row mt-3 justify-between">
 				<ButtonGhost title="Скасувати" onClick={props.onCancel} />

@@ -16,9 +16,9 @@ export default function MarkersPanelHeader(props: Props) {
 		setInCreateMode((prevInCreateMode) => !prevInCreateMode);
 	};
 
-	const doCreateMarker = async (title: string, startNumber: number) => {
+	const doCreateMarker = async (title: string, autoInc: boolean, startNumber: number | null) => {
 		try {
-			await createMarker(title, startNumber);
+			await createMarker(title, autoInc, startNumber);
 			toggleCreateMode();
 			props.onCreated();
 		} catch (error) {

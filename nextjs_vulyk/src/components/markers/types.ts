@@ -1,4 +1,5 @@
 export type Marker = {
 	title: string;
-	startNumber: number;
+	autoInc: boolean;
+	startNumber: number | null;
 };

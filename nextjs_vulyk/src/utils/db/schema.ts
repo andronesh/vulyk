@@ -1,9 +1,10 @@
-import { int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { int, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const markersTable = sqliteTable("markers", {
 	id: int().primaryKey({ autoIncrement: true }).notNull(),
 	title: text().notNull().unique(),
-	lastNumber: int().notNull(),
+	autoInc: integer({ mode: "boolean" }).notNull().default(false),
+	lastNumber: int(),
 });
 
 export type MarkerEntity = typeof markersTable.$inferInsert;
