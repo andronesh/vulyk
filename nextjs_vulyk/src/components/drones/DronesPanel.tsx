@@ -29,11 +29,11 @@ export default function DronesPanel(props: Props) {
 		<div className={`flex flex-col ${props.className}`}>
 			<DronesPanelHeader marker={props.selectedMarker} onCreated={refreshDronesList} />
 			{drones.length > 0 && (
-				<div className="rounded-md border-gray-600 border-2">
+				<div className="rounded-md border-military-500 border-4">
 					{drones.map((drone) => (
 						<div
 							key={drone.id}
-							className="p-2 font-semibold [&:not(:last-child)]:border-b-2 border-gray-600 hover:cursor-pointer hover:font-bold hover:bg-blue-950"
+							className="p-2 font-semibold [&:not(:last-child)]:border-b-2 border-military-500 hover:cursor-pointer hover:font-bold hover:bg-military-500"
 						>
 							{drone.markerTitle}-{drone.markerNumber}
 						</div>

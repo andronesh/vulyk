@@ -31,7 +31,7 @@ export default function MarkerCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="flex flex-col p-3 mt-3 rounded bg-gray-50 dark:bg-gray-800">
+		<div className="flex flex-col p-3 mt-3 rounded dark:bg-military-600">
 			<div className="flex flex-row">
 				<InputTextLabeled
 					label="скорочення"

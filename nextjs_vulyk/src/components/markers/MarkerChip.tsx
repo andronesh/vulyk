@@ -13,8 +13,8 @@ export default function MarkerChip(props: Props) {
 	return (
 		<div
 			className={`m-1 rounded px-2 pt-2 pb-1 ${props.className} ${
-				props.isSelected ? "bg-blue-800" : "bg-gray-700"
-			} text-white hover:cursor-pointer hover:font-bold hover:bg-blue-950`}
+				props.isSelected ? "bg-meadow-800" : "bg-military-500"
+			} text-white hover:cursor-pointer hover:font-bold hover:bg-meadow-600 hover:text-military-600 duration-300`}
 			onClick={() => props.onClick(props.marker)}
 		>
 			{props.marker.title}:{props.marker.lastNumber}
