@@ -14,7 +14,7 @@ export default function Home() {
 				<MarkersPanel onMarkerSelected={setSelectedMarker} />
 			</div>
 			<div className="flex w-full">
-				{selectedMarker && <DronesPanel selectedMarker={selectedMarker} />}
+				{selectedMarker && <DronesPanel selectedMarker={selectedMarker} className="w-1/3" />}
 				{!selectedMarker && (
 					<div className="self-center w-full text-center">Виберіть маркер щоб переглянути список дронів</div>
 				)}

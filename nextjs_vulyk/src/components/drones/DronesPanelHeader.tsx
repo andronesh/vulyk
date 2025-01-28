@@ -39,11 +39,11 @@ export default function DronesPanelHeader(props: Props) {
 
 	return (
 		<div className={`${props.className}`}>
-			<div className="flex flex-row justify-between">
-				<span className="">Дрони:</span>
+			<div className="flex flex-row justify-between items-center mb-1">
+				<span className="text-lg font-bold">Дрони:</span>
 				{!inCreateMode && (
 					<span
-						className="px-3 py-1 hover:cursor-pointer hover:font-bold hover:bg-gray-800 rounded"
+						className="px-3 py-1 hover:cursor-pointer hover:font-bold hover:bg-gray-800 rounded duration-300"
 						onClick={toggleCreateMode}
 					>
 						додати дрон

@@ -26,13 +26,21 @@ export default function DronesPanel(props: Props) {
 	};
 
 	return (
-		<div className={`flex ${props.className}`}>
+		<div className={`flex flex-col ${props.className}`}>
 			<DronesPanelHeader marker={props.selectedMarker} onCreated={refreshDronesList} />
-			{drones.map((drone) => (
-				<div key={drone.id}>
-					{drone.markerTitle}-{drone.markerNumber}
+			{drones.length > 0 && (
+				<div className="rounded-md border-gray-600 border-2">
+					{drones.map((drone) => (
+						<div
+							key={drone.id}
+							className="p-2 font-semibold [&:not(:last-child)]:border-b-2 border-gray-600 hover:cursor-pointer hover:font-bold hover:bg-blue-950"
+						>
+							{drone.markerTitle}-{drone.markerNumber}
+						</div>
+					))}
 				</div>
-			))}
+			)}
+			{drones.length === 0 && <div className="mt-3 italic text-center">Немає дронів з цим маркером</div>}
 		</div>
 	);
 }
