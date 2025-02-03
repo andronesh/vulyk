@@ -2,10 +2,10 @@
 
 import { MarkerEntity } from "@/utils/db/schema";
 import MarkersPanelHeader from "./MarkersPanelHeader";
-import { useEffect, useState } from "react";
-import { listAllMarkers } from "@/logic/repo/markersRepo";
+import { useState } from "react";
 import MarkerChip from "./MarkerChip";
 import Spinner from "../common/Spinner";
+import { useAllMarkersQuery } from "@/logic/queries/useAllMarkersQuery";
 
 type Props = {
 	onMarkerSelected: (marker: MarkerEntity) => void;
@@ -13,24 +13,8 @@ type Props = {
 };
 
 export default function MarkersPanel(props: Props) {
-	const [markersLoading, setMarkersLoading] = useState(false);
-	const [markers, setMarkers] = useState<MarkerEntity[]>([]);
+	const { data: markers, isFetching, isError } = useAllMarkersQuery();
 	const [selectedMarker, setSelectedMarker] = useState<MarkerEntity | undefined>();
-
-	useEffect(() => {
-		refreshMarkersList();
-	}, []);
-
-	const refreshMarkersList = () => {
-		setMarkersLoading(true);
-		listAllMarkers()
-			.then(setMarkers)
-			.catch((error) => {
-				console.error("Failed to load markers from DB", error);
-				window.alert(JSON.stringify(error)); // TODO beautify errors
-			})
-			.finally(() => setMarkersLoading(false));
-	};
 
 	const selectMarker = (marker: MarkerEntity) => {
 		setSelectedMarker(marker);
@@ -39,11 +23,17 @@ export default function MarkersPanel(props: Props) {
 
 	return (
 		<div className={`${props.className}`}>
-			<MarkersPanelHeader onCreated={refreshMarkersList} />
+			<MarkersPanelHeader />
 			<div className="flex flex-row flex-wrap">
-				{markersLoading && <Spinner />}
-				{!markersLoading &&
-					markers.map((marker) => (
+				{isError && (
+					<div className="text-white bg-red-700 text-lg p-2 rounded">
+						Не вдалось завантажити список маркеів з бази данних
+					</div>
+				)}
+				{isFetching && <Spinner />}
+				{!isFetching &&
+					!isError &&
+					markers?.map((marker) => (
 						<MarkerChip
 							key={marker.id}
 							marker={marker}

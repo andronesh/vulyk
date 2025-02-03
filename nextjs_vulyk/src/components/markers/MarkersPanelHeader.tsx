@@ -3,13 +3,14 @@
 import { useState } from "react";
 import MarkerCreateForm from "./MarkerCreateForm";
 import { createMarker } from "@/logic/repo/markersRepo";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
-	onCreated: () => void;
 	className?: string;
 };
 
 export default function MarkersPanelHeader(props: Props) {
+	const queryClient = useQueryClient();
 	const [inCreateMode, setInCreateMode] = useState(false);
 
 	const toggleCreateMode = () => {
@@ -20,7 +21,7 @@ export default function MarkersPanelHeader(props: Props) {
 		try {
 			await createMarker(title, autoInc, startNumber);
 			toggleCreateMode();
-			props.onCreated();
+			queryClient.invalidateQueries({ queryKey: ["markers"] });
 		} catch (error) {
 			console.error(`Failed to create marker with title=${title} and startNumber=${startNumber}`, error);
 			window.alert(error); //TODO beautify

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import TanstackQueryClientProvider from "@/logic/queries/TanstackQueryClientProvider";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -116,7 +117,9 @@ export default function RootLayout({
 					</div>
 				</aside>
 
-				<div className="p-4 sm:ml-64">{children}</div>
+				<div className="p-4 sm:ml-64">
+					<TanstackQueryClientProvider>{children}</TanstackQueryClientProvider>
+				</div>
 			</body>
 		</html>
 	);
