@@ -17,3 +17,11 @@ export const dronesTable = sqliteTable("drones", {
 });
 
 export type DroneEntity = typeof dronesTable.$inferInsert;
+
+export const specsTable = sqliteTable("specs", {
+	id: int().primaryKey({ autoIncrement: true }),
+	title: text().notNull(),
+	description: text(),
+});
+
+export type SpecEntity = typeof specsTable.$inferInsert;
