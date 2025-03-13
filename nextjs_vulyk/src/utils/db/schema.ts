@@ -25,3 +25,13 @@ export const specsTable = sqliteTable("specs", {
 });
 
 export type SpecEntity = typeof specsTable.$inferInsert;
+
+export const specOptionsTable = sqliteTable("spec_options", {
+	id: int().primaryKey({ autoIncrement: true }),
+	specId: integer('spec_id').references(() => specsTable.id).notNull(),
+	title: text().notNull(),
+	comment: text(),
+});
+
+export type SpecOptionInsertData = typeof specOptionsTable.$inferInsert;
+export type SpecOptionEntity = typeof specOptionsTable.$inferSelect;

@@ -8,7 +8,7 @@ import SpecsPanelHeader from "./SpecsPanelHeader";
 import SpecsListElement from "./SpecsListElement";
 
 type Props = {
-	// onSpecSelected: (spec: SpecEntity) => void;
+	onSpecSelected: (spec: SpecEntity) => void;
 	className?: string;
 };
 
@@ -18,7 +18,7 @@ export default function SpecsPanel(props: Props) {
 
 	const selectSpec = (spec: SpecEntity) => {
 		setSelectedSpec(spec);
-		// props.onSpecSelected(spec);
+		props.onSpecSelected(spec);
 	};
 
 	return (

@@ -1,21 +1,20 @@
 "use client";
 
+import SpecOptionsPanel from "@/components/specs/SpecOptionsPanel";
 import SpecsPanel from "@/components/specs/SpecsPanel";
+import { SpecEntity } from "@/utils/db/schema";
+import { useState } from "react";
 
 export default function Home() {
-	// const [selectedSpec, setSelectedMarker] = useState<MarkerEntity | undefined>();
+	const [selectedSpec, setSelectedSpec] = useState<SpecEntity | undefined>(); // TODO use zustand to manage this state
 
 	return (
 		<div className="flex flex-row">
 			<div className="w-72">
-				{/* <SpecsPanel onSpecSelected={setSelectedMarker} /> */}
-				<SpecsPanel />
+				<SpecsPanel onSpecSelected={setSelectedSpec} />
 			</div>
-			<div className="flex">
-				{/* {selectedMarker && <DronesPanel selectedMarker={selectedMarker} className="w-1/3" />}
-				{!selectedMarker && (
-					<div className="self-center w-full text-center">Виберіть маркер щоб переглянути список дронів</div>
-				)} */}
+			<div className="w-72">
+				{selectedSpec && <SpecOptionsPanel spec={selectedSpec} />}
 			</div>
 		</div>
 	);
