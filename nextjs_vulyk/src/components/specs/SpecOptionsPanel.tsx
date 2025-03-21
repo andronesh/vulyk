@@ -3,7 +3,8 @@
 import { SpecEntity } from "@/utils/db/schema";
 import Spinner from "../common/Spinner";
 import { useSpecOptionsQuery } from "@/logic/queries/useSpecOptionsQuery";
-import SpecOptionCreateForm from "./SpecOptionCreateForm";
+import CreateFormCollapsible from "../common/CreateFormCollapsible";
+import { SpecOptionCreateForm } from "./SpecOptionCreateForm";
 
 type Props = {
 	spec: SpecEntity;
@@ -36,7 +37,15 @@ export default function SpecOptionsPanel(props: Props) {
 						</div>
 					))}
 			</div>
-			<SpecOptionCreateForm spec={props.spec} />
+			{/* <SpecOptionCreateForm spec={props.spec} className="" /> */}
+			<CreateFormCollapsible
+				formComponent={SpecOptionCreateForm}
+				defaults={{
+					specId: props.spec.id!, // TODO SpecEntity should be inferSelect
+					title: "",
+					comment: "",
+				}}
+			/>
 		</div>
 	);
 }

@@ -8,34 +8,43 @@ import { SpecEntity, SpecOptionInsertData } from "@/utils/db/schema";
 import InputTextareaLabeled from "../common/InputTextareaLabeled";
 import { insertOption } from "@/logic/repo/specsRepo";
 import { useQueryClient } from "@tanstack/react-query";
-import { CreateFormProps } from "../common/CreateFormCollapsible";
 
-// type Props = {
-// 	spec: SpecEntity;
-// 	className?: string;
-// };
+interface Props<T> {
+	// spec: SpecEntity;
+	initialFormData: T;
+	formComponent: React.FC<CreateFormProps<T>>;
+	className?: string;
+}
 
-export const SpecOptionCreateForm: React.FC<CreateFormProps<SpecOptionInsertData>> = (props) => {
-	// export default function SpecOptionCreateForm(props: Props) {
+export interface CreateFormProps<T> {
+	initialFormData: T;
+	// onValueChanged: (field: string, value: string) => void;
+	doSave: () => void;
+}
+
+export default function CreateFormCollapsible<T>(props: Props<T>) {
 	const queryClient = useQueryClient();
-	const [newOptionData, setNewOptionData] = useState<SpecOptionInsertData>(props.defaults);
+	const [newFormData, setNewFormData] = useState<T>(props.initialFormData);
+	const FormComponent = props.formComponent;
 
 	useEffect(() => {
-		setNewOptionData(props.defaults);
-	}, [props.defaults]);
+		setNewOptionData(props.initialFormData);
+	}, [props.initialFormData]);
 
 	const cleanFormData = () => {
-		// setNewOptionData((prevData) => {
-		// 	return {
-		// 		...prevData,
-		// 		title: "",
-		// 		comment: "",
-		// 	};
-		// });
+		// 	setNewOptionData((prevData) => {
+		// 		return {
+		// 			...prevData,
+		// 			title: "",
+		// 			comment: "",
+		// 		};
+		// 	});
 	};
 
 	const updateTextValue = (event: ChangeEvent<HTMLInputElement>) => {
-		props.onValueChanged(event.target.name, event.target.value);
+		setNewOptionData((prevData) => {
+			return { ...prevData, [event.target.name]: event.target.value };
+		});
 	};
 
 	const createOption = () => {
@@ -59,21 +68,18 @@ export const SpecOptionCreateForm: React.FC<CreateFormProps<SpecOptionInsertData
 	};
 
 	return (
-		<div className="flex flex-col">
-			<InputTextLabeled
-				label="назва"
-				name="title"
-				value={newOptionData.title}
-				placeholder="max solo 2.5w"
-				onChange={updateTextValue}
+		<div className="mx-1 mt-3 flex flex-col rounded border-2 border-solid border-military-500 p-3 dark:bg-military-600">
+			<FormComponent
+				re
+				initialFormData={props.initialFormData}
+				onValueChanged={function (field: string, value: string): void {
+					throw new Error("Function not implemented.");
+				}}
 			/>
-			<InputTextareaLabeled
-				label={"коментар"}
-				name={"comment"}
-				value={newOptionData.comment}
-				onChange={updateTextValue}
-				className="mt-3"
-			/>
+			<div className="mt-3 flex flex-row justify-between">
+				<ButtonGhost title="Очистити" onClick={cleanFormData} />
+				<ButtonLoading title="Зберегти" onClick={createOption} />
+			</div>
 		</div>
 	);
-};
+}
