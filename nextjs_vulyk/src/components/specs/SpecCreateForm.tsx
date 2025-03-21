@@ -34,7 +34,7 @@ export default function SpecCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="flex flex-col p-3 mt-3 rounded dark:bg-military-600">
+		<div className="mt-3 flex flex-col rounded p-3 dark:bg-military-600">
 			<div className="flex flex-col">
 				<InputTextLabeled
 					label="назва"
@@ -51,7 +51,7 @@ export default function SpecCreateForm(props: Props) {
 					className="mt-3"
 				/>
 			</div>
-			<div className="flex flex-row mt-3 justify-between">
+			<div className="mt-3 flex flex-row justify-between">
 				<ButtonGhost title="Скасувати" onClick={props.onCancel} />
 				<ButtonLoading title="Зберегти" onClick={createMarker} />
 			</div>

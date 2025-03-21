@@ -30,7 +30,7 @@ export default function DroneCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="flex flex-col p-3 mb-3 rounded bg-gray-50 dark:bg-military-600">
+		<div className="mb-3 flex flex-col rounded bg-gray-50 p-3 dark:bg-military-600">
 			<div className="flex flex-row">
 				<InputTextLabeled
 					label="маркер"
@@ -65,7 +65,7 @@ export default function DroneCreateForm(props: Props) {
 				}}
 				className="mt-3"
 			/>
-			<div className="flex flex-row mt-3 justify-between">
+			<div className="mt-3 flex flex-row justify-between">
 				<ButtonGhost title="Скасувати" onClick={props.onCancel} />
 				<ButtonLoading title="Зберегти" onClick={createDrone} />
 			</div>

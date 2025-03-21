@@ -12,9 +12,9 @@ type Props = {
 export default function MarkerChip(props: Props) {
 	return (
 		<div
-			className={`m-1 rounded px-2 pt-2 pb-1 ${props.className} ${
+			className={`m-1 rounded px-2 pb-1 pt-2 ${props.className} ${
 				props.isSelected ? "bg-meadow-800" : "bg-military-500"
-			} text-white hover:cursor-pointer hover:font-bold hover:bg-meadow-600 hover:text-military-600 duration-300`}
+			} text-white duration-300 hover:cursor-pointer hover:bg-meadow-600 hover:font-bold hover:text-military-600`}
 			onClick={() => props.onClick(props.marker)}
 		>
 			{props.marker.title}

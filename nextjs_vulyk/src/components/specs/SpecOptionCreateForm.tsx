@@ -23,22 +23,23 @@ export default function SpecOptionCreateForm(props: Props) {
 	});
 
 	useEffect(() => {
-		setNewOptionData({ // NEED to do this, why?
+		setNewOptionData({
+			// NEED to do this, why?
 			specId: props.spec.id!, // TODO SpecEntity should be inferSelect
 			title: "",
-			comment: ""
+			comment: "",
 		});
-	}, [props.spec])
+	}, [props.spec]);
 
 	const cleanFormData = () => {
 		setNewOptionData((prevData) => {
 			return {
 				...prevData,
 				title: "",
-				comment: ""
+				comment: "",
 			};
 		});
-	}
+	};
 
 	const updateTextValue = (event: ChangeEvent<HTMLInputElement>) => {
 		setNewOptionData((prevData) => {
@@ -51,18 +52,23 @@ export default function SpecOptionCreateForm(props: Props) {
 			window.alert(`Поле "назва" не має бути пустим`); // TODO show it as message inside form
 			return;
 		}
-		insertOption(newOptionData.specId, newOptionData.title, newOptionData.comment ? newOptionData.comment : undefined)
+		insertOption(
+			newOptionData.specId,
+			newOptionData.title,
+			newOptionData.comment ? newOptionData.comment : undefined,
+		)
 			.then(() => {
 				cleanFormData();
 				queryClient.invalidateQueries({ queryKey: ["specs", props.spec.id, "options"] });
-			}).catch(error => {
+			})
+			.catch((error) => {
 				console.error(`Failed to insert option for spec with id=${props.spec.id}`, error);
 				window.alert(error);
-			})
+			});
 	};
 
 	return (
-		<div className="flex flex-col p-3 mt-3 rounded dark:bg-military-600">
+		<div className="mt-3 flex flex-col rounded p-3 dark:bg-military-600">
 			<div className="flex flex-col">
 				<InputTextLabeled
 					label="назва"
@@ -79,7 +85,7 @@ export default function SpecOptionCreateForm(props: Props) {
 					className="mt-3"
 				/>
 			</div>
-			<div className="flex flex-row mt-3 justify-between">
+			<div className="mt-3 flex flex-row justify-between">
 				<ButtonGhost title="Очистити" onClick={cleanFormData} />
 				<ButtonLoading title="Зберегти" onClick={createOption} />
 			</div>

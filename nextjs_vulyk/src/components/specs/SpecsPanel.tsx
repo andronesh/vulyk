@@ -26,7 +26,7 @@ export default function SpecsPanel(props: Props) {
 			<SpecsPanelHeader />
 			<div className="flex flex-col">
 				{isError && (
-					<div className="text-white bg-red-700 text-lg p-2 rounded">
+					<div className="rounded bg-red-700 p-2 text-lg text-white">
 						Не вдалось завантажити список характеристик з бази данних
 					</div>
 				)}

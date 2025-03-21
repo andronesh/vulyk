@@ -13,9 +13,8 @@ export default function Home() {
 			<div className="w-72">
 				<SpecsPanel onSpecSelected={setSelectedSpec} />
 			</div>
-			<div className="w-72">
-				{selectedSpec && <SpecOptionsPanel spec={selectedSpec} />}
-			</div>
+
+			<div className="w-72">{selectedSpec && <SpecOptionsPanel spec={selectedSpec} />}</div>
 		</div>
 	);
 }
