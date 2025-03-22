@@ -43,7 +43,7 @@ export default function DronesPanelHeader(props: Props) {
 				<span className="text-lg font-bold">Дрони:</span>
 				{!inCreateMode && (
 					<span
-						className="rounded px-3 py-1 duration-300 hover:cursor-pointer hover:bg-military-500 hover:font-bold"
+						className="rounded-sm px-3 py-1 duration-300 hover:cursor-pointer hover:bg-military-500 hover:font-bold"
 						onClick={toggleCreateMode}
 					>
 						додати дрон

@@ -30,7 +30,7 @@ export default function DroneCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="mb-3 flex flex-col rounded bg-gray-50 p-3 dark:bg-military-600">
+		<div className="mb-3 flex flex-col rounded-sm bg-gray-50 p-3 dark:bg-military-600">
 			<div className="flex flex-row">
 				<InputTextLabeled
 					label="маркер"

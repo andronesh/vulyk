@@ -34,7 +34,7 @@ export default function SpecCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="mt-3 flex flex-col rounded p-3 dark:bg-military-600">
+		<div className="mt-3 flex flex-col rounded-sm p-3 dark:bg-military-600">
 			<div className="flex flex-col">
 				<InputTextLabeled
 					label="назва"

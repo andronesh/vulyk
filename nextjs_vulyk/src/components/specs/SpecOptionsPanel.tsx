@@ -18,7 +18,7 @@ export default function SpecOptionsPanel(props: Props) {
 			<h2>{props.spec.title} варіанти:</h2>
 			<div className="flex flex-col">
 				{isError && (
-					<div className="rounded bg-red-700 p-2 text-lg text-white">
+					<div className="rounded-sm bg-red-700 p-2 text-lg text-white">
 						Не вдалось завантажити варіанти характеристик з бази данних
 					</div>
 				)}
@@ -29,7 +29,7 @@ export default function SpecOptionsPanel(props: Props) {
 					options?.map((option) => (
 						<div
 							key={option.id}
-							className={`m-1 flex flex-col rounded bg-military-500 px-2 pb-1 pt-2 text-white duration-300 hover:cursor-pointer hover:bg-meadow-600 hover:font-bold hover:text-military-600`}
+							className={`bg-military-500 hover:bg-meadow-600 hover:text-military-600 m-1 flex flex-col rounded-sm px-2 pt-2 pb-1 text-white duration-300 hover:cursor-pointer hover:font-bold`}
 						>
 							{option.title}
 							{option.description && <span className="truncate text-sm italic">{props.spec.description}</span>}

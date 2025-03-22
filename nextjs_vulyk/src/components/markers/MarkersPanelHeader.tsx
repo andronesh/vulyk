@@ -34,7 +34,7 @@ export default function MarkersPanelHeader(props: Props) {
 				<span className="">Маркери:</span>
 				{!inCreateMode && (
 					<span
-						className="rounded px-3 py-1 hover:cursor-pointer hover:bg-gray-800 hover:font-bold"
+						className="rounded-sm px-3 py-1 hover:cursor-pointer hover:bg-gray-800 hover:font-bold"
 						onClick={toggleCreateMode}
 					>
 						+

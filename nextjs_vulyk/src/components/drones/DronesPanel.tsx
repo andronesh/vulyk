@@ -33,7 +33,7 @@ export default function DronesPanel(props: Props) {
 					{drones.map((drone) => (
 						<div
 							key={drone.id}
-							className="border-military-500 p-2 font-semibold hover:cursor-pointer hover:bg-military-500 hover:font-bold [&:not(:last-child)]:border-b-2"
+							className="border-military-500 p-2 font-semibold hover:cursor-pointer hover:bg-military-500 hover:font-bold not-last:border-b-2"
 						>
 							{drone.markerTitle}-{drone.markerNumber}
 						</div>

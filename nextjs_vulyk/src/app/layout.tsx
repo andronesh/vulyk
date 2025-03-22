@@ -31,7 +31,7 @@ export default function RootLayout({
 					data-drawer-toggle="default-sidebar"
 					aria-controls="default-sidebar"
 					type="button"
-					className="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 sm:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+					className="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-gray-200 sm:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
 				>
 					<svg
 						className="h-6 w-6"
@@ -79,7 +79,7 @@ export default function RootLayout({
 									className="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-military-500"
 								>
 									<svg
-										className="h-5 w-5 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+										className="h-5 w-5 shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
 										aria-hidden="true"
 										xmlns="http://www.w3.org/2000/svg"
 										fill="currentColor"
@@ -99,7 +99,7 @@ export default function RootLayout({
 									className="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-military-500"
 								>
 									<svg
-										className="h-5 w-5 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+										className="h-5 w-5 shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
 										aria-hidden="true"
 										xmlns="http://www.w3.org/2000/svg"
 										fill="currentColor"
@@ -116,7 +116,7 @@ export default function RootLayout({
 									className="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-military-500"
 								>
 									<svg
-										className="h-5 w-5 flex-shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
+										className="h-5 w-5 shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
 										aria-hidden="true"
 										xmlns="http://www.w3.org/2000/svg"
 										fill="currentColor"

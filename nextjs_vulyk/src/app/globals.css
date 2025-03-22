@@ -1,6 +1,45 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-military-900: #071a10;
+  --color-military-800: #081f13;
+  --color-military-700: #0a2416;
+  --color-military-600: #0b291a;
+  --color-military-500: #0d2e1d;
+  --color-military-400: #0e3320;
+  --color-military-300: #264736;
+  --color-military-200: #3e5c4d;
+  --color-military-100: #567063;
+  --color-meadow-900: #665400;
+  --color-meadow-800: #806a00;
+  --color-meadow-700: #b39400;
+  --color-meadow-600: #cca900;
+  --color-meadow-500: #e6be00;
+  --color-meadow-400: #ffd300;
+  --color-meadow-300: #ffe04d;
+  --color-meadow-200: #ffe980;
+  --color-meadow-100: #fff2b3;
+}
+
+/*
+  The default border color has changed to `currentColor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
 
 :root {
 	--background: #ffffff;

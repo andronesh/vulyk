@@ -26,7 +26,7 @@ export default function MarkersPanel(props: Props) {
 			<MarkersPanelHeader />
 			<div className="flex flex-row flex-wrap">
 				{isError && (
-					<div className="rounded bg-red-700 p-2 text-lg text-white">
+					<div className="rounded-sm bg-red-700 p-2 text-lg text-white">
 						Не вдалось завантажити список маркеів з бази данних
 					</div>
 				)}
