@@ -86,11 +86,11 @@
   ---break---
 */
 .dark {
-	--background: oklch(0.129 0.042 264.695);
+	--background: oklch(19.79% 0.0326 158.74);
 	--foreground: oklch(0.984 0.003 247.858);
 	--card: oklch(0.208 0.042 265.755);
 	--card-foreground: oklch(0.984 0.003 247.858);
-	--popover: oklch(0.208 0.042 265.755);
+	--popover: oklch(25.32% 0.046 158.63);
 	--popover-foreground: oklch(0.984 0.003 247.858);
 	--primary: oklch(53% 0.1087 94.6);
 	--primary-foreground: oklch(0.984 0.003 247.858);
@@ -98,7 +98,7 @@
 	--secondary-foreground: oklch(0.984 0.003 247.858);
 	--muted: oklch(0.279 0.041 260.031);
 	--muted-foreground: oklch(0.704 0.04 256.788);
-	--accent: oklch(0.279 0.041 260.031);
+	--accent: oklch(74.42% 0.152555 93.9375);
 	--accent-foreground: oklch(0.984 0.003 247.858);
 	--destructive: oklch(0.704 0.191 22.216);
 	--border: oklch(1 0 0 / 10%);
