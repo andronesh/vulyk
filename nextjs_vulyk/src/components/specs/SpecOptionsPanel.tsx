@@ -1,6 +1,6 @@
 "use client";
 
-import { SpecEntity } from "@/utils/db/schema";
+import { SpecEntity, SpecOptionEntity } from "@/utils/db/schema";
 import Spinner from "../common/Spinner";
 import { useSpecOptionsQuery } from "@/logic/queries/useSpecOptionsQuery";
 import SpecOptionCreateForm from "./SpecOptionCreateForm";
@@ -8,6 +8,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { Button } from "../ui/button";
 import { useState } from "react";
+import ConfirmationDialog from "../common/ConfirmationDialog";
+import { deleteOption } from "@/logic/repo/specsRepo";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
 	spec: SpecEntity;
@@ -15,8 +18,25 @@ type Props = {
 };
 
 export default function SpecOptionsPanel(props: Props) {
+	const queryClient = useQueryClient();
 	const { data: options, isFetching, isError } = useSpecOptionsQuery(props.spec.id!);
+	const [optionForDeletion, setOptionForDeletion] = useState<SpecOptionEntity | undefined>();
 	const [isCreateOptionDialogOpen, setCreateOptionDialogOpen] = useState(false);
+
+	const doDeleteOption = () => {
+		deleteOption(optionForDeletion!.id)
+			.then(() => {
+				queryClient.invalidateQueries({ queryKey: ["specs", props.spec.id, "options"] });
+				setOptionForDeletion(undefined);
+			})
+			.catch((error) => {
+				console.error(
+					`Не вдалось видалити варіант ${optionForDeletion?.title} з id=${optionForDeletion?.id}`,
+					error,
+				);
+				window.alert(error);
+			});
+	};
 
 	return (
 		<div className={`${props.className}`}>
@@ -46,7 +66,12 @@ export default function SpecOptionsPanel(props: Props) {
 							</DropdownMenuTrigger>
 							<DropdownMenuContent className="w-56">
 								<DropdownMenuItem className="hover:cursor-pointer">редагувати</DropdownMenuItem>
-								<DropdownMenuItem className="hover:cursor-pointer">видалити</DropdownMenuItem>
+								<DropdownMenuItem
+									className="hover:cursor-pointer"
+									onClick={() => setOptionForDeletion(option as SpecOptionEntity)}
+								>
+									видалити
+								</DropdownMenuItem>
 							</DropdownMenuContent>
 						</DropdownMenu>
 					))}
@@ -70,6 +95,12 @@ export default function SpecOptionsPanel(props: Props) {
 					/>
 				</DialogContent>
 			</Dialog>
+			<ConfirmationDialog
+				isOpen={optionForDeletion !== undefined}
+				title={`Точно видалити "${optionForDeletion?.title}"?`}
+				onConfirm={doDeleteOption}
+				onCancel={() => setOptionForDeletion(undefined)}
+			/>
 		</div>
 	);
 }

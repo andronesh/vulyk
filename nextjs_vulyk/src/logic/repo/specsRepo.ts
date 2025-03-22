@@ -26,3 +26,7 @@ export async function insertOption(specId: number, title: string, comment?: stri
 		comment: comment?.trim() ? comment.trim() : null,
 	});
 }
+
+export async function deleteOption(optionId: number) {
+	await DB.delete(specOptionsTable).where(eq(specOptionsTable.id, optionId));
+}
