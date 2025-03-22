@@ -30,3 +30,9 @@ export async function insertOption(specId: number, title: string, comment?: stri
 export async function deleteOption(optionId: number) {
 	await DB.delete(specOptionsTable).where(eq(specOptionsTable.id, optionId));
 }
+
+export async function updateOption(optionId: number, newTitle: string, newComment?: string) {
+	await DB.update(specOptionsTable)
+		.set({ title: newTitle, comment: newComment ? newComment : null })
+		.where(eq(specOptionsTable.id, optionId));
+}

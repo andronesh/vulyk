@@ -11,6 +11,7 @@ import { useState } from "react";
 import ConfirmationDialog from "../common/ConfirmationDialog";
 import { deleteOption } from "@/logic/repo/specsRepo";
 import { useQueryClient } from "@tanstack/react-query";
+import SpecOptionEditForm from "./SpecOptionEditForm";
 
 type Props = {
 	spec: SpecEntity;
@@ -21,7 +22,12 @@ export default function SpecOptionsPanel(props: Props) {
 	const queryClient = useQueryClient();
 	const { data: options, isFetching, isError } = useSpecOptionsQuery(props.spec.id!);
 	const [optionForDeletion, setOptionForDeletion] = useState<SpecOptionEntity | undefined>();
+	const [optionForEdition, setOptionForEdition] = useState<SpecOptionEntity | undefined>();
 	const [isCreateOptionDialogOpen, setCreateOptionDialogOpen] = useState(false);
+
+	const refreshOptionsList = () => {
+		queryClient.invalidateQueries({ queryKey: ["specs", props.spec.id, "options"] });
+	};
 
 	const doDeleteOption = () => {
 		deleteOption(optionForDeletion!.id)
@@ -65,7 +71,12 @@ export default function SpecOptionsPanel(props: Props) {
 								</div>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent className="w-56">
-								<DropdownMenuItem className="hover:cursor-pointer">редагувати</DropdownMenuItem>
+								<DropdownMenuItem
+									className="hover:cursor-pointer"
+									onClick={() => setOptionForEdition(option as SpecOptionEntity)}
+								>
+									редагувати
+								</DropdownMenuItem>
 								<DropdownMenuItem
 									className="hover:cursor-pointer"
 									onClick={() => setOptionForDeletion(option as SpecOptionEntity)}
@@ -92,6 +103,21 @@ export default function SpecOptionsPanel(props: Props) {
 						spec={props.spec}
 						onCreated={() => setCreateOptionDialogOpen(false)}
 						onCanceled={() => setCreateOptionDialogOpen(false)}
+					/>
+				</DialogContent>
+			</Dialog>
+			<Dialog open={optionForEdition !== undefined} onOpenChange={() => setOptionForEdition(undefined)}>
+				<DialogContent className="sm:max-w-[425px]">
+					<DialogHeader>
+						<DialogTitle></DialogTitle>
+					</DialogHeader>
+					<SpecOptionEditForm
+						option={optionForEdition!}
+						onSaved={() => {
+							setOptionForEdition(undefined);
+							refreshOptionsList();
+						}}
+						onCanceled={() => setOptionForEdition(undefined)}
 					/>
 				</DialogContent>
 			</Dialog>
