@@ -8,7 +8,7 @@ export default function ButtonGhost(props: Props) {
 	return (
 		<div className={props.className}>
 			<button
-				className="flex rounded-sm px-4 py-2 font-bold duration-300 hover:bg-meadow-600 hover:text-military-600 dark:text-white"
+				className="hover:bg-meadow-600 hover:text-military-600 flex rounded-sm px-4 py-2 font-bold duration-300 hover:cursor-pointer dark:text-white"
 				onClick={props.onClick}
 			>
 				{props.title}
