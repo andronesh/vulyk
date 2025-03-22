@@ -5,6 +5,9 @@ import Spinner from "../common/Spinner";
 import { useSpecOptionsQuery } from "@/logic/queries/useSpecOptionsQuery";
 import SpecOptionCreateForm from "./SpecOptionCreateForm";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { useState } from "react";
 
 type Props = {
 	spec: SpecEntity;
@@ -13,6 +16,7 @@ type Props = {
 
 export default function SpecOptionsPanel(props: Props) {
 	const { data: options, isFetching, isError } = useSpecOptionsQuery(props.spec.id!);
+	const [isCreateOptionDialogOpen, setCreateOptionDialogOpen] = useState(false);
 
 	return (
 		<div className={`${props.className}`}>
@@ -47,7 +51,25 @@ export default function SpecOptionsPanel(props: Props) {
 						</DropdownMenu>
 					))}
 			</div>
-			<SpecOptionCreateForm spec={props.spec} />
+			<div className="flex w-full flex-row justify-center pt-2">
+				<Button variant="secondary" onClick={() => setCreateOptionDialogOpen(true)}>
+					додати варіант
+				</Button>
+			</div>
+			<Dialog open={isCreateOptionDialogOpen} onOpenChange={setCreateOptionDialogOpen}>
+				<DialogContent className="sm:max-w-[425px]">
+					<DialogHeader>
+						<DialogTitle>
+							Новий варіант для <b>{props.spec.title}</b>
+						</DialogTitle>
+					</DialogHeader>
+					<SpecOptionCreateForm
+						spec={props.spec}
+						onCreated={() => setCreateOptionDialogOpen(false)}
+						onCanceled={() => setCreateOptionDialogOpen(false)}
+					/>
+				</DialogContent>
+			</Dialog>
 		</div>
 	);
 }

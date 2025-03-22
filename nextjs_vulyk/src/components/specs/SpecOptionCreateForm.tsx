@@ -12,6 +12,8 @@ import { useQueryClient } from "@tanstack/react-query";
 type Props = {
 	spec: SpecEntity;
 	className?: string;
+	onCanceled: () => void;
+	onCreated: () => void;
 };
 
 export default function SpecOptionCreateForm(props: Props) {
@@ -39,6 +41,7 @@ export default function SpecOptionCreateForm(props: Props) {
 				comment: "",
 			};
 		});
+		props.onCanceled();
 	};
 
 	const updateTextValue = (event: ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +63,7 @@ export default function SpecOptionCreateForm(props: Props) {
 			.then(() => {
 				cleanFormData();
 				queryClient.invalidateQueries({ queryKey: ["specs", props.spec.id, "options"] });
+				props.onCreated();
 			})
 			.catch((error) => {
 				console.error(`Failed to insert option for spec with id=${props.spec.id}`, error);
@@ -68,7 +72,7 @@ export default function SpecOptionCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="mt-3 flex flex-col rounded-sm p-3 dark:bg-military-600">
+		<div className="dark:bg-military-600 flex flex-col rounded-sm">
 			<div className="flex flex-col">
 				<InputTextLabeled
 					label="назва"
@@ -86,8 +90,8 @@ export default function SpecOptionCreateForm(props: Props) {
 				/>
 			</div>
 			<div className="mt-3 flex flex-row justify-between">
-				<ButtonGhost title="Очистити" onClick={cleanFormData} />
-				<ButtonLoading title="Зберегти" onClick={createOption} />
+				<ButtonGhost title="скасувати" onClick={cleanFormData} />
+				<ButtonLoading title="зберегти" onClick={createOption} />
 			</div>
 		</div>
 	);
