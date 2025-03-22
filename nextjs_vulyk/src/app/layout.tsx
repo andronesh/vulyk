@@ -25,13 +25,13 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+			<body className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}>
 				<button
 					data-drawer-target="default-sidebar"
 					data-drawer-toggle="default-sidebar"
 					aria-controls="default-sidebar"
 					type="button"
-					className="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:outline-hidden focus:ring-2 focus:ring-gray-200 sm:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+					className="ms-3 mt-2 inline-flex items-center rounded-lg p-2 text-sm text-gray-500 hover:bg-gray-100 focus:ring-2 focus:ring-gray-200 focus:outline-hidden sm:hidden dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
 				>
 					<svg
 						className="h-6 w-6"
@@ -50,15 +50,15 @@ export default function RootLayout({
 
 				<aside
 					id="default-sidebar"
-					className="fixed left-0 top-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
+					className="fixed top-0 left-0 z-40 h-screen w-64 -translate-x-full transition-transform sm:translate-x-0"
 					aria-label="Sidebar"
 				>
-					<div className="h-full overflow-y-auto bg-gray-50 px-3 py-4 dark:bg-military-800">
+					<div className="dark:bg-military-800 h-full overflow-y-auto bg-gray-50 px-3 py-4">
 						<ul className="space-y-2 font-medium">
 							<li>
 								<a
 									href="/"
-									className="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-military-500"
+									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
 									<svg
 										className="h-5 w-5 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
@@ -76,7 +76,7 @@ export default function RootLayout({
 							<li>
 								<a
 									href="/drones"
-									className="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-military-500"
+									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
 									<svg
 										className="h-5 w-5 shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
@@ -96,7 +96,7 @@ export default function RootLayout({
 							<li>
 								<a
 									href="/specs"
-									className="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-military-500"
+									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
 									<svg
 										className="h-5 w-5 shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"
@@ -113,7 +113,7 @@ export default function RootLayout({
 							<li>
 								<a
 									href="/locations"
-									className="group flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white dark:hover:bg-military-500"
+									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
 									<svg
 										className="h-5 w-5 shrink-0 text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white"

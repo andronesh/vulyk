@@ -4,6 +4,7 @@ import { SpecEntity } from "@/utils/db/schema";
 import Spinner from "../common/Spinner";
 import { useSpecOptionsQuery } from "@/logic/queries/useSpecOptionsQuery";
 import SpecOptionCreateForm from "./SpecOptionCreateForm";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 
 type Props = {
 	spec: SpecEntity;
@@ -27,13 +28,23 @@ export default function SpecOptionsPanel(props: Props) {
 				{!isFetching &&
 					!isError &&
 					options?.map((option) => (
-						<div
-							key={option.id}
-							className={`bg-military-500 hover:bg-meadow-600 hover:text-military-600 m-1 flex flex-col rounded-sm px-2 pt-2 pb-1 text-white duration-300 hover:cursor-pointer hover:font-bold`}
-						>
-							{option.title}
-							{option.description && <span className="truncate text-sm italic">{props.spec.description}</span>}
-						</div>
+						<DropdownMenu>
+							<DropdownMenuTrigger asChild>
+								<div
+									key={option.id}
+									className={`bg-military-500 hover:bg-meadow-600 hover:text-military-600 m-1 flex flex-col rounded-sm px-2 pt-2 pb-1 text-white duration-300 hover:cursor-pointer hover:font-bold`}
+								>
+									{option.title}
+									{option.description && (
+										<span className="truncate text-sm italic">{props.spec.description}</span>
+									)}
+								</div>
+							</DropdownMenuTrigger>
+							<DropdownMenuContent className="w-56">
+								<DropdownMenuItem className="hover:cursor-pointer">редагувати</DropdownMenuItem>
+								<DropdownMenuItem className="hover:cursor-pointer">видалити</DropdownMenuItem>
+							</DropdownMenuContent>
+						</DropdownMenu>
 					))}
 			</div>
 			<SpecOptionCreateForm spec={props.spec} />
