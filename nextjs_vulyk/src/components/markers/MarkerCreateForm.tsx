@@ -37,7 +37,7 @@ export default function MarkerCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="mt-3 flex flex-col rounded-sm p-3 dark:bg-military-600">
+		<div className="dark:bg-military-600 mt-3 flex flex-col rounded-sm p-3">
 			<div className="flex flex-col">
 				<InputTextLabeled
 					label="скорочення"
@@ -54,7 +54,7 @@ export default function MarkerCreateForm(props: Props) {
 					label={"автонумерація"}
 					name={"autoInc"}
 					value={newMarkerData.autoInc}
-					onChange={(event: any) => {
+					onChange={(event) => {
 						setNewMarkerData((prevData) => {
 							return { ...prevData, autoInc: event.target.checked };
 						});

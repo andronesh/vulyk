@@ -58,7 +58,7 @@ export default function SpecOptionsPanel(props: Props) {
 				{!isFetching &&
 					!isError &&
 					options?.map((option) => (
-						<DropdownMenu>
+						<DropdownMenu key={option.id}>
 							<DropdownMenuTrigger asChild>
 								<div
 									key={option.id}

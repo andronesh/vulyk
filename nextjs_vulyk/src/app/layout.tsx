@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TanstackQueryClientProvider from "@/logic/queries/TanstackQueryClientProvider";
+import Link from "next/link";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -25,7 +26,7 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}>
+			<body className={`${geistSans.variable} ${geistMono.variable} dark bg-military-900 antialiased`}>
 				<button
 					data-drawer-target="default-sidebar"
 					data-drawer-toggle="default-sidebar"
@@ -56,7 +57,7 @@ export default function RootLayout({
 					<div className="dark:bg-military-800 h-full overflow-y-auto bg-gray-50 px-3 py-4">
 						<ul className="space-y-2 font-medium">
 							<li>
-								<a
+								<Link
 									href="/"
 									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
@@ -71,10 +72,10 @@ export default function RootLayout({
 										<path d="M12.5 0c-.157 0-.311.01-.565.027A1 1 0 0 0 11 1.02V10h8.975a1 1 0 0 0 1-.935c.013-.188.028-.374.028-.565A8.51 8.51 0 0 0 12.5 0Z" />
 									</svg>
 									<span className="ms-3">Зведення</span>
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/drones"
 									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
@@ -91,10 +92,10 @@ export default function RootLayout({
 									<span className="ms-3 inline-flex items-center justify-center rounded-full bg-gray-100 px-2 text-sm font-medium text-gray-800 dark:bg-gray-700 dark:text-gray-300">
 										12п/30б
 									</span>
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/specs"
 									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
@@ -108,10 +109,10 @@ export default function RootLayout({
 										<path d="M22,14c0,.552-.447,1-1,1H9c-.552,0-1-.448-1-1s.448-1,1-1h12c.553,0,1,.448,1,1ZM5,12H3c-.552,0-1,.448-1,1v2c0,.552,.448,1,1,1h2c.552,0,1-.448,1-1v-2c0-.552-.448-1-1-1Zm16,7H9c-.552,0-1,.448-1,1s.448,1,1,1h12c.553,0,1-.448,1-1s-.447-1-1-1Zm-16-1H3c-.552,0-1,.448-1,1v2c0,.552,.448,1,1,1h2c.552,0,1-.448,1-1v-2c0-.552-.448-1-1-1ZM24,3.5v3c0,1.933-1.567,3.5-3.5,3.5H3.5c-1.933,0-3.5-1.567-3.5-3.5V3.5C0,1.567,1.567,0,3.5,0H20.5c1.933,0,3.5,1.567,3.5,3.5Zm-4.886,0h-4.257c-.697,0-1.043,.846-.546,1.334l1.858,1.825c.455,.455,1.177,.455,1.632,0l1.858-1.825c.498-.489,.152-1.334-.546-1.334Z" />
 									</svg>
 									<span className="ms-3 flex-1 whitespace-nowrap">Характеристики</span>
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/models"
 									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
@@ -125,10 +126,10 @@ export default function RootLayout({
 										<path d="M17,0H7C4.243,0,2,2.243,2,5v14c0,2.757,2.243,5,5,5h10c2.757,0,5-2.243,5-5V5c0-2.757-2.243-5-5-5Zm-7,19c0,.552-.448,1-1,1h-2c-.552,0-1-.448-1-1v-2c0-.552,.448-1,1-1h2c.552,0,1,.448,1,1v2Zm0-6c0,.552-.448,1-1,1h-2c-.552,0-1-.448-1-1v-2c0-.552,.448-1,1-1h2c.552,0,1,.448,1,1v2Zm0-6c0,.552-.448,1-1,1h-2c-.552,0-1-.448-1-1v-2c0-.552,.448-1,1-1h2c.552,0,1,.448,1,1v2Zm7,12h-4c-1.308-.006-1.307-1.994,0-2h4c1.308,.006,1.307,1.994,0,2Zm0-6h-4c-1.308-.006-1.307-1.994,0-2h4c1.308,.006,1.307,1.994,0,2Zm0-6h-4c-1.308-.006-1.307-1.994,0-2h4c1.308,.006,1.307,1.994,0,2Z" />
 									</svg>
 									<span className="ms-3 flex-1 whitespace-nowrap">Моделі</span>
-								</a>
+								</Link>
 							</li>
 							<li>
-								<a
+								<Link
 									href="/locations"
 									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
 								>
@@ -145,7 +146,7 @@ export default function RootLayout({
 									<span className="ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
 										3
 									</span>
-								</a>
+								</Link>
 							</li>
 						</ul>
 					</div>

@@ -1,6 +1,6 @@
 type Props = {
 	title: string;
-	onClick: (event: any) => void;
+	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	className?: string;
 };
 

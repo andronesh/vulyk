@@ -18,7 +18,7 @@ type Props = {
 export default function SpecOptionEditForm(props: Props) {
 	const [formData, setFormData] = useState<SpecOptionEntity>(props.option);
 
-	const updateTextValue = (event: ChangeEvent<HTMLInputElement>) => {
+	const updateTextValue = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setFormData((prevData) => {
 			return { ...prevData, [event.target.name]: event.target.value };
 		});

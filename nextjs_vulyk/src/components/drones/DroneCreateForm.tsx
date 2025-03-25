@@ -30,7 +30,7 @@ export default function DroneCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="mb-3 flex flex-col rounded-sm bg-gray-50 p-3 dark:bg-military-600">
+		<div className="dark:bg-military-600 mb-3 flex flex-col rounded-sm bg-gray-50 p-3">
 			<div className="flex flex-row">
 				<InputTextLabeled
 					label="маркер"
@@ -38,7 +38,7 @@ export default function DroneCreateForm(props: Props) {
 					value={props.marker.title}
 					placeholder="AAA"
 					disabled={true}
-					onChange={(event) => {}}
+					onChange={() => {}}
 					className="mr-3"
 				/>
 				<InputTextLabeled

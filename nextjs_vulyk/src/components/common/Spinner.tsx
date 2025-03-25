@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 type Props = {
 	className?: string;
 };
@@ -5,7 +7,7 @@ type Props = {
 export default function Spinner(props: Props) {
 	return (
 		<div className={`flex flex-row justify-center ${props.className}`}>
-			<img src="/spinner.svg" />
+			<Image src="/spinner.svg" alt="loading indicator" width={300} height={300} />
 		</div>
 	);
 }

@@ -2,7 +2,7 @@ type Props = {
 	title: string;
 	loadingTitle?: string;
 	isLoading?: boolean;
-	onClick: (event: any) => void;
+	onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
 	className?: string;
 };
 

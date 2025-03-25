@@ -19,7 +19,7 @@ export default function SpecCreateForm(props: Props) {
 		description: "",
 	});
 
-	const updateTextValue = (event: ChangeEvent<HTMLInputElement>) => {
+	const updateTextValue = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setNewSpecData((prevData) => {
 			return { ...prevData, [event.target.name]: event.target.value };
 		});
@@ -34,7 +34,7 @@ export default function SpecCreateForm(props: Props) {
 	};
 
 	return (
-		<div className="mt-3 flex flex-col rounded-sm p-3 dark:bg-military-600">
+		<div className="dark:bg-military-600 mt-3 flex flex-col rounded-sm p-3">
 			<div className="flex flex-col">
 				<InputTextLabeled
 					label="назва"

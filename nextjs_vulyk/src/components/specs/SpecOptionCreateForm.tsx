@@ -44,7 +44,7 @@ export default function SpecOptionCreateForm(props: Props) {
 		props.onCanceled();
 	};
 
-	const updateTextValue = (event: ChangeEvent<HTMLInputElement>) => {
+	const updateTextValue = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setNewOptionData((prevData) => {
 			return { ...prevData, [event.target.name]: event.target.value };
 		});

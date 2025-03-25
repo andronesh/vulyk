@@ -24,7 +24,7 @@ type SpecGroupSpecsSelectorItemModel = {
 
 export default function SpecCreateForm(props: Props) {
 	const queryClient = useQueryClient();
-	const { data: specs, isFetching, isError } = useAllSpecsQuery();
+	const { data: specs } = useAllSpecsQuery();
 	const [specSelectorItems, setSpecSelectorItems] = useState<SpecGroupSpecsSelectorItemModel[]>([]);
 
 	const [newSpecGroupData, setNewSpecGroupData] = useState<SpecGroupFormData>({
@@ -54,7 +54,7 @@ export default function SpecCreateForm(props: Props) {
 		});
 	};
 
-	const updateTextValue = (event: ChangeEvent<HTMLInputElement>) => {
+	const updateTextValue = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setNewSpecGroupData((prevData) => {
 			return { ...prevData, [event.target.name]: event.target.value };
 		});
