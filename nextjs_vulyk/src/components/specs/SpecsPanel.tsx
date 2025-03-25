@@ -6,6 +6,7 @@ import Spinner from "../common/Spinner";
 import { useAllSpecsQuery } from "@/logic/queries/useAllSpecsQuery";
 import SpecsPanelHeader from "./SpecsPanelHeader";
 import SpecsListElement from "./SpecsListElement";
+import SpecGroupsPanel from "./SpecGroupsPanel";
 
 type Props = {
 	onSpecSelected: (spec: SpecEntity) => void;
@@ -24,6 +25,7 @@ export default function SpecsPanel(props: Props) {
 	return (
 		<div className={`${props.className}`}>
 			<SpecsPanelHeader />
+			<SpecGroupsPanel />
 			<div className="flex flex-col">
 				{isError && (
 					<div className="rounded-sm bg-red-700 p-2 text-lg text-white">

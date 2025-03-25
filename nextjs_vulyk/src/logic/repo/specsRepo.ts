@@ -1,7 +1,14 @@
 "use server";
 
 import { DB } from "@/utils/db";
-import { SpecEntity, specOptionsTable, specsTable } from "@/utils/db/schema";
+import {
+	SpecEntity,
+	SpecGroupEntity,
+	specGroupRelationsTable,
+	specGroupsTable,
+	specOptionsTable,
+	specsTable,
+} from "@/utils/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function listAllSpecs(): Promise<SpecEntity[]> {
@@ -35,4 +42,37 @@ export async function updateOption(optionId: number, newTitle: string, newCommen
 	await DB.update(specOptionsTable)
 		.set({ title: newTitle, comment: newComment ? newComment : null })
 		.where(eq(specOptionsTable.id, optionId));
+}
+
+export async function insertGroup(specIds: number[], title: string, comment?: string) {
+	await DB.transaction(async (tx) => {
+		const insertGroupResult = await DB.insert(specGroupsTable).values({
+			title: title.trim(),
+			comment: comment?.trim() ? comment.trim() : null,
+		});
+		const insertedGroupId = Number(insertGroupResult.lastInsertRowid);
+		if (insertedGroupId) {
+			try {
+				for (let i = 0; i < specIds.length; i++) {
+					await DB.insert(specGroupRelationsTable).values({
+						groupId: insertedGroupId,
+						specId: specIds[i],
+					});
+				}
+			} catch (error) {
+				console.log(
+					`Failed to insert relation between group ${insertedGroupId} and specs ${JSON.stringify(specIds)}`,
+					error,
+				);
+				tx.rollback(); // TODO doesn't work, need to delete inserted rows manually
+				throw error;
+			}
+		} else {
+			// TODO throw error?
+		}
+	});
+}
+
+export async function listAllSpecGroups(): Promise<SpecGroupEntity[]> {
+	return await DB.select().from(specGroupsTable);
 }

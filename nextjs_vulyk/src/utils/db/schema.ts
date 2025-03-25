@@ -37,3 +37,24 @@ export const specOptionsTable = sqliteTable("spec_options", {
 
 export type SpecOptionInsertData = typeof specOptionsTable.$inferInsert;
 export type SpecOptionEntity = typeof specOptionsTable.$inferSelect;
+
+export const specGroupsTable = sqliteTable("spec_group", {
+	id: int().primaryKey({ autoIncrement: true }),
+	title: text().notNull(),
+	comment: text(),
+});
+
+export type SpecGroupEntity = typeof specGroupsTable.$inferSelect;
+export type SpecGroupFormData = typeof specGroupsTable.$inferInsert;
+
+export const specGroupRelationsTable = sqliteTable("spec_group_relations", {
+	id: int().primaryKey({ autoIncrement: true }),
+	groupId: integer("group_id")
+		.references(() => specGroupsTable.id)
+		.notNull(),
+	specId: integer("spec_id")
+		.references(() => specsTable.id)
+		.notNull(),
+});
+
+// export type SpecGroupRelFromData = typeof specGroupRelationsTable.$inferInsert;
