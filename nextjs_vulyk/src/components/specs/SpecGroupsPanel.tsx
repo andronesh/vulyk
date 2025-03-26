@@ -1,9 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button } from "../ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
-import SpecGroupCreateForm from "./SpecGroupCreateForm";
+
 import { useAllSpecGroupsQuery } from "@/logic/queries/useAllSpecGroupsQuery";
 import Spinner from "../common/Spinner";
 import GroupChip from "./GroupChip";
@@ -15,7 +13,6 @@ type Props = {
 };
 
 export default function SpecGroupsPanel(props: Props) {
-	const [isCreateGroupFormVisible, setCreateGroupFormVisible] = useState(false);
 	const [selectedGroup, setSelectedGroup] = useState<SpecGroupModel | undefined>(undefined);
 	const { data: allGroups, isFetching, isError } = useAllSpecGroupsQuery();
 
@@ -42,9 +39,6 @@ export default function SpecGroupsPanel(props: Props) {
 							onClick={setSelectedGroup}
 						/>
 					))}
-				<Button variant="ghost" size="sm" onClick={() => setCreateGroupFormVisible(true)}>
-					+ групу
-				</Button>
 				{isFetching && <Spinner className="m-1 h-12 p-1" />}
 				{isError && (
 					<div className="rounded-sm bg-red-700 p-2 text-lg text-white">
@@ -52,17 +46,6 @@ export default function SpecGroupsPanel(props: Props) {
 					</div>
 				)}
 			</div>
-			<Dialog open={isCreateGroupFormVisible} onOpenChange={() => setCreateGroupFormVisible(false)}>
-				<DialogContent className="sm:max-w-[425px]">
-					<DialogHeader>
-						<DialogTitle>Нова група характеристик</DialogTitle>
-					</DialogHeader>
-					<SpecGroupCreateForm
-						onSaved={() => setCreateGroupFormVisible(false)}
-						onCanceled={() => setCreateGroupFormVisible(false)}
-					/>
-				</DialogContent>
-			</Dialog>
 		</div>
 	);
 }
