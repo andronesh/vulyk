@@ -32,6 +32,7 @@ export const specOptionsTable = sqliteTable("spec_options", {
 		.references(() => specsTable.id)
 		.notNull(),
 	title: text().notNull(),
+	shortName: text("short_name").notNull(),
 	comment: text(),
 });
 
@@ -63,6 +64,7 @@ export const specGroupRelationsTable = sqliteTable("spec_group_relations", {
 export const modelsTable = sqliteTable("models", {
 	id: int().primaryKey({ autoIncrement: true }),
 	title: text().notNull(),
+	optionsShort: text().notNull(),
 	comment: text(),
 });
 export type ModelFormData = typeof modelsTable.$inferInsert;

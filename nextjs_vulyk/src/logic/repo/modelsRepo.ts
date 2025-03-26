@@ -10,10 +10,11 @@ import {
 } from "@/utils/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function insertModel(optionIds: number[], title: string, comment?: string) {
+export async function insertModel(optionIds: number[], title: string, optionsShort: string, comment?: string) {
 	await DB.transaction(async (tx) => {
 		const insertModelResult = await tx.insert(modelsTable).values({
 			title: title.trim(),
+			optionsShort: optionsShort.trim(),
 			comment: comment?.trim() ? comment.trim() : null,
 		});
 		const insertedModelId = Number(insertModelResult.lastInsertRowid);

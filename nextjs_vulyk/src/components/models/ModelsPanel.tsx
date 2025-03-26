@@ -20,9 +20,9 @@ export default function ModelsPanel(props: Props) {
 				створити модель
 			</Button>
 			{allModels?.map((model) => (
-				<div key={model.id}>
+				<div key={model.id} className="flex justify-between">
 					<b>{model.title}</b>
-					{":  " + model.options.map((option) => option.title).join(", ")}
+					<span>{model.optionsShort}</span>
 				</div>
 			))}
 			<Dialog open={isModelCreateFormVisible} onOpenChange={() => setModelCreateFormVisible(false)}>

@@ -40,6 +40,7 @@ export default function ModelCreateForm(props: Props) {
 
 	const [newModelFormData, setNewModelFormData] = useState<ModelFormData>({
 		title: "",
+		optionsShort: "",
 		comment: "",
 	});
 
@@ -48,6 +49,7 @@ export default function ModelCreateForm(props: Props) {
 			return {
 				...prevData,
 				title: "",
+				optionsShort: "",
 				comment: "",
 			};
 		});
@@ -61,7 +63,16 @@ export default function ModelCreateForm(props: Props) {
 	};
 
 	const selectOption = (option: SpecOptionEntity) => {
-		setSelectedOptions(new Map(selectedOptions).set(option.specId, option));
+		const newSelectedOptions = new Map(selectedOptions);
+		newSelectedOptions.set(option.specId, option);
+		setSelectedOptions(newSelectedOptions);
+		const optionsShort = [...newSelectedOptions.values()].map((option) => option.shortName).join(" ");
+		setNewModelFormData((prevData) => {
+			return {
+				...prevData,
+				optionsShort,
+			};
+		});
 	};
 
 	const createModel = () => {
@@ -73,6 +84,7 @@ export default function ModelCreateForm(props: Props) {
 		insertModel(
 			[...selectedOptions.values().map((option) => option.id)],
 			newModelFormData.title,
+			newModelFormData.optionsShort,
 			newModelFormData.comment ? newModelFormData.comment : undefined,
 		)
 			.then(() => {
@@ -101,7 +113,7 @@ export default function ModelCreateForm(props: Props) {
 					<SpecOptionSelector key={spec.id} spec={spec} onOptionSelected={selectOption} />
 				))}
 			</ScrollArea>
-			<div className="flex flex-col">
+			<div className="flex flex-col space-y-2">
 				<InputTextLabeled
 					label="назва"
 					name="title"
@@ -109,12 +121,19 @@ export default function ModelCreateForm(props: Props) {
 					placeholder="max solo 2.5w"
 					onChange={updateTextValue}
 				/>
+				<InputTextLabeled
+					label="короткі зачіпки"
+					name="optionsShort"
+					value={newModelFormData.optionsShort}
+					placeholder="генерується автоматично ..."
+					disabled={true}
+				/>
 				<InputTextareaLabeled
 					label={"коментар"}
 					name={"comment"}
 					value={newModelFormData.comment}
 					onChange={updateTextValue}
-					className="mt-3"
+					className=""
 				/>
 			</div>
 			<div className="mt-3 flex flex-row justify-between">

@@ -29,7 +29,7 @@ export default function SpecOptionEditForm(props: Props) {
 			window.alert(`Поле "назва" не має бути пустим`); // TODO show it as message inside form
 			return;
 		}
-		updateOption(formData.id, formData.title.trim(), formData.comment?.trim())
+		updateOption(formData.id, formData.title.trim(), formData.shortName.trim(), formData.comment?.trim())
 			.then(() => {
 				props.onSaved();
 			})
@@ -47,6 +47,13 @@ export default function SpecOptionEditForm(props: Props) {
 					name="title"
 					value={formData.title}
 					placeholder="max solo 2.5w"
+					onChange={updateTextValue}
+				/>
+				<InputTextLabeled
+					label="коротко"
+					name="shortName"
+					value={formData.shortName!}
+					placeholder="RMSolo2w5"
 					onChange={updateTextValue}
 				/>
 				<InputTextareaLabeled

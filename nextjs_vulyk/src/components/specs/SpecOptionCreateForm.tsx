@@ -21,6 +21,7 @@ export default function SpecOptionCreateForm(props: Props) {
 	const [newOptionData, setNewOptionData] = useState<SpecOptionInsertData>({
 		specId: props.spec.id!, // TODO SpecEntity should be inferSelect
 		title: "",
+		shortName: "",
 		comment: "",
 	});
 
@@ -29,6 +30,7 @@ export default function SpecOptionCreateForm(props: Props) {
 			// NEED to do this, why?
 			specId: props.spec.id!, // TODO SpecEntity should be inferSelect
 			title: "",
+			shortName: "",
 			comment: "",
 		});
 	}, [props.spec]);
@@ -38,6 +40,7 @@ export default function SpecOptionCreateForm(props: Props) {
 			return {
 				...prevData,
 				title: "",
+				shortName: "",
 				comment: "",
 			};
 		});
@@ -62,6 +65,7 @@ export default function SpecOptionCreateForm(props: Props) {
 		insertOption(
 			newOptionData.specId,
 			newOptionData.title,
+			newOptionData.shortName,
 			newOptionData.comment ? newOptionData.comment : undefined,
 		)
 			.then(() => {
@@ -83,6 +87,13 @@ export default function SpecOptionCreateForm(props: Props) {
 					name="title"
 					value={newOptionData.title}
 					placeholder="max solo 2.5w"
+					onChange={updateTextValue}
+				/>
+				<InputTextLabeled
+					label="коротко"
+					name="shortName"
+					value={newOptionData.shortName}
+					placeholder="RMSolo2w5"
 					onChange={updateTextValue}
 				/>
 				<InputTextareaLabeled
