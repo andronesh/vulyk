@@ -47,26 +47,17 @@ export async function updateOption(optionId: number, newTitle: string, newCommen
 
 export async function insertGroup(specIds: number[], title: string, comment?: string) {
 	await DB.transaction(async (tx) => {
-		const insertGroupResult = await DB.insert(specGroupsTable).values({
+		const insertGroupResult = await tx.insert(specGroupsTable).values({
 			title: title.trim(),
 			comment: comment?.trim() ? comment.trim() : null,
 		});
 		const insertedGroupId = Number(insertGroupResult.lastInsertRowid);
 		if (insertedGroupId) {
-			try {
-				for (let i = 0; i < specIds.length; i++) {
-					await DB.insert(specGroupRelationsTable).values({
-						groupId: insertedGroupId,
-						specId: specIds[i],
-					});
-				}
-			} catch (error) {
-				console.log(
-					`Failed to insert relation between group ${insertedGroupId} and specs ${JSON.stringify(specIds)}`,
-					error,
-				);
-				tx.rollback(); // TODO doesn't work, need to delete inserted rows manually
-				throw error;
+			for (let i = 0; i < specIds.length; i++) {
+				await tx.insert(specGroupRelationsTable).values({
+					groupId: insertedGroupId,
+					specId: specIds[i],
+				});
 			}
 		} else {
 			// TODO throw error?
