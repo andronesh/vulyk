@@ -3,6 +3,7 @@
 import { SpecEntity, SpecOptionEntity } from "@/utils/db/schema";
 import { useSpecOptionsQuery } from "@/logic/queries/useSpecOptionsQuery";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import SpecOptionCreateButton from "./SpecOptionCreateButton";
 
 type Props = {
 	spec: SpecEntity;
@@ -51,6 +52,8 @@ export default function SpecOptionSelector(props: Props) {
 							{option.title}
 						</SelectItem>
 					))}
+
+					<SpecOptionCreateButton spec={props.spec} />
 				</SelectContent>
 			</Select>
 		</div>

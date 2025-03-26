@@ -41,13 +41,17 @@ export default function SpecOptionCreateForm(props: Props) {
 				comment: "",
 			};
 		});
-		props.onCanceled();
 	};
 
 	const updateTextValue = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		setNewOptionData((prevData) => {
 			return { ...prevData, [event.target.name]: event.target.value };
 		});
+	};
+
+	const handleCancel = () => {
+		cleanFormData();
+		props.onCanceled();
 	};
 
 	const createOption = () => {
@@ -90,7 +94,7 @@ export default function SpecOptionCreateForm(props: Props) {
 				/>
 			</div>
 			<div className="mt-3 flex flex-row justify-between">
-				<ButtonGhost title="скасувати" onClick={cleanFormData} />
+				<ButtonGhost title="скасувати" onClick={handleCancel} />
 				<ButtonLoading title="зберегти" onClick={createOption} />
 			</div>
 		</div>
