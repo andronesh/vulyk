@@ -12,8 +12,6 @@ type Props = {
 };
 
 export default function ConfirmationDialog(props: Props) {
-	// const [isCreateOptionDialogOpen, setCreateOptionDialogOpen] = useState(false);
-
 	return (
 		<Dialog open={props.isOpen} onOpenChange={props.onCancel}>
 			<DialogContent className="sm:max-w-[425px]">
