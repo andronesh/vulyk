@@ -60,4 +60,20 @@ export const specGroupRelationsTable = sqliteTable("spec_group_relations", {
 		.notNull(),
 });
 
-// export type SpecGroupRelFromData = typeof specGroupRelationsTable.$inferInsert;
+export const modelsTable = sqliteTable("models", {
+	id: int().primaryKey({ autoIncrement: true }),
+	title: text().notNull(),
+	comment: text(),
+});
+export type ModelFormData = typeof modelsTable.$inferInsert;
+export type ModelEntity = typeof modelsTable.$inferSelect;
+
+export const specOptionToModelRelationsTable = sqliteTable("spec_option_to_model_relations", {
+	id: int().primaryKey({ autoIncrement: true }),
+	modelId: integer("model_id")
+		.references(() => modelsTable.id)
+		.notNull(),
+	optionId: integer("option_id")
+		.references(() => specOptionsTable.id)
+		.notNull(),
+});

@@ -6,6 +6,7 @@ import {
 	SpecGroupModel,
 	specGroupRelationsTable,
 	specGroupsTable,
+	SpecOptionEntity,
 	specOptionsTable,
 	specsTable,
 } from "@/utils/db/schema";
@@ -22,7 +23,7 @@ export async function createSpec(title: string, description?: string) {
 	});
 }
 
-export async function listAllSpecOptions(specId: number): Promise<SpecEntity[]> {
+export async function listAllSpecOptions(specId: number): Promise<SpecOptionEntity[]> {
 	return await DB.select().from(specOptionsTable).where(eq(specOptionsTable.specId, specId));
 }
 
