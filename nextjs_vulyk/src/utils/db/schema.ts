@@ -31,6 +31,7 @@ export const specOptionsTable = sqliteTable("spec_options", {
 	specId: integer("spec_id")
 		.references(() => specsTable.id)
 		.notNull(),
+	specTitle: text("spec_title").notNull(),
 	title: text().notNull(),
 	shortName: text("short_name").notNull(),
 	comment: text(),

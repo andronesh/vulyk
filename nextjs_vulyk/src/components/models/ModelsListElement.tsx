@@ -22,9 +22,9 @@ export default function ModelsListElement(props: Props) {
 			<div className="flex items-center justify-between">
 				<b>{props.model.title}</b>
 				<span
-					className={`rounded px-1 text-sm duration-300 ${
+					className={`rounded px-1 text-sm duration-200 ${
 						props.isSelected
-							? "bg-meadow-800"
+							? "bg-meadow-700"
 							: "bg-military-300 group-hover:bg-meadow-400 group-hover:text-military-600 group-hover:cursor-pointer"
 					}`}
 				>

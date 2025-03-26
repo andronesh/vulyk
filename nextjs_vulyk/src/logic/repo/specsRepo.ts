@@ -27,9 +27,16 @@ export async function listAllSpecOptions(specId: number): Promise<SpecOptionEnti
 	return await DB.select().from(specOptionsTable).where(eq(specOptionsTable.specId, specId));
 }
 
-export async function insertOption(specId: number, title: string, shortName: string, comment?: string) {
+export async function insertOption(
+	specId: number,
+	specTitle: string,
+	title: string,
+	shortName: string,
+	comment?: string,
+) {
 	await DB.insert(specOptionsTable).values({
 		specId,
+		specTitle: specTitle.trim(),
 		title: title.trim(),
 		shortName: shortName.trim(),
 		comment: comment?.trim() ? comment.trim() : null,

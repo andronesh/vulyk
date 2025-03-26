@@ -20,6 +20,7 @@ export default function SpecOptionCreateForm(props: Props) {
 	const queryClient = useQueryClient();
 	const [newOptionData, setNewOptionData] = useState<SpecOptionInsertData>({
 		specId: props.spec.id!, // TODO SpecEntity should be inferSelect
+		specTitle: props.spec.title,
 		title: "",
 		shortName: "",
 		comment: "",
@@ -29,6 +30,7 @@ export default function SpecOptionCreateForm(props: Props) {
 		setNewOptionData({
 			// NEED to do this, why?
 			specId: props.spec.id!, // TODO SpecEntity should be inferSelect
+			specTitle: props.spec.title,
 			title: "",
 			shortName: "",
 			comment: "",
@@ -64,6 +66,7 @@ export default function SpecOptionCreateForm(props: Props) {
 		}
 		insertOption(
 			newOptionData.specId,
+			newOptionData.specTitle,
 			newOptionData.title,
 			newOptionData.shortName,
 			newOptionData.comment ? newOptionData.comment : undefined,

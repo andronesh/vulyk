@@ -17,8 +17,11 @@ export default function ModelDetailsPanel(props: Props) {
 			<i>{props.model.comment}</i>
 			<div className={`bg-military-500 flex flex-col rounded p-1 px-2 ${props.className}`}>
 				{props.model.options.map((option) => (
-					<div key={option.id}>
-						{option.title}
+					<div key={option.id} className="flex flex-col">
+						<div className="flex space-x-2">
+							<span className="text-military-100">{option.specTitle}:</span>
+							<span>{option.title}</span>
+						</div>
 						{option.comment && <i>{"  " + option.comment}</i>}
 					</div>
 				))}
