@@ -1,6 +1,6 @@
 "use client";
 
-import ModelSelectPanel from "@/components/models/ModelSelectPanel";
+import ModelSelectPanel from "@/components/models/ModelsPanel";
 
 export default function ModelsPage() {
 	return (

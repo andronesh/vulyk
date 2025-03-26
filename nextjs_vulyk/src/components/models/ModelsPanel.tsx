@@ -10,7 +10,7 @@ type Props = {
 	className?: string;
 };
 
-export default function ModelSelectPanel(props: Props) {
+export default function ModelsPanel(props: Props) {
 	const [isModelCreateFormVisible, setModelCreateFormVisible] = useState(false);
 	const { data: allModels } = useAllModelsWithOptionsQuery();
 
