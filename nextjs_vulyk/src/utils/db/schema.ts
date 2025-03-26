@@ -46,6 +46,9 @@ export const specGroupsTable = sqliteTable("spec_group", {
 
 export type SpecGroupEntity = typeof specGroupsTable.$inferSelect;
 export type SpecGroupFormData = typeof specGroupsTable.$inferInsert;
+export type SpecGroupModel = SpecGroupEntity & {
+	specIds: number[];
+};
 
 export const specGroupRelationsTable = sqliteTable("spec_group_relations", {
 	id: int().primaryKey({ autoIncrement: true }),

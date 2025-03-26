@@ -3,7 +3,7 @@
 import { DB } from "@/utils/db";
 import {
 	SpecEntity,
-	SpecGroupEntity,
+	SpecGroupModel,
 	specGroupRelationsTable,
 	specGroupsTable,
 	specOptionsTable,
@@ -73,6 +73,21 @@ export async function insertGroup(specIds: number[], title: string, comment?: st
 	});
 }
 
-export async function listAllSpecGroups(): Promise<SpecGroupEntity[]> {
-	return await DB.select().from(specGroupsTable);
+export async function listAllSpecGroupsWithSpecIds(): Promise<SpecGroupModel[]> {
+	const rows = await DB.select()
+		.from(specGroupsTable)
+		.leftJoin(specGroupRelationsTable, eq(specGroupsTable.id, specGroupRelationsTable.groupId))
+		.all();
+	const result = rows.reduce<Record<number, SpecGroupModel>>((acc, row) => {
+		const group = row.spec_group;
+		const spec = row.spec_group_relations;
+		if (!acc[group.id]) {
+			acc[group.id] = { ...group, specIds: [] };
+		}
+		if (spec) {
+			acc[group.id].specIds.push(spec.specId);
+		}
+		return acc;
+	}, {});
+	return Object.values(result);
 }

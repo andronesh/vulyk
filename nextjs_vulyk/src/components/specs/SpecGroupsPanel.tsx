@@ -1,29 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import SpecGroupCreateForm from "./SpecGroupCreateForm";
 import { useAllSpecGroupsQuery } from "@/logic/queries/useAllSpecGroupsQuery";
 import Spinner from "../common/Spinner";
 import GroupChip from "./GroupChip";
-import { SpecGroupEntity } from "@/utils/db/schema";
+import { SpecGroupModel } from "@/utils/db/schema";
 
 type Props = {
+	onGroupChanged: (group: SpecGroupModel | undefined) => void;
 	className?: string;
 };
 
 export default function SpecGroupsPanel(props: Props) {
 	const [isCreateGroupFormVisible, setCreateGroupFormVisible] = useState(false);
-	const [selectedGroup, setSelectedGroup] = useState<SpecGroupEntity | undefined>(undefined);
+	const [selectedGroup, setSelectedGroup] = useState<SpecGroupModel | undefined>(undefined);
 	const { data: allGroups, isFetching, isError } = useAllSpecGroupsQuery();
+
+	useEffect(() => {
+		props.onGroupChanged(selectedGroup);
+	}, [selectedGroup]);
 
 	return (
 		<div className={`${props.className}`}>
 			<div className="flex flex-row flex-wrap items-center justify-between">
 				<GroupChip
 					key={0}
-					group={{ id: 0, title: "всі х-ки", comment: null }}
+					group={{ id: 0, title: "всі х-ки", comment: null, specIds: [] }}
 					isSelected={selectedGroup === undefined}
 					onClick={() => setSelectedGroup(undefined)}
 				/>

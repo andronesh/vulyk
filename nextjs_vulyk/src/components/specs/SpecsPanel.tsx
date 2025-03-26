@@ -1,7 +1,7 @@
 "use client";
 
-import { SpecEntity } from "@/utils/db/schema";
-import { useState } from "react";
+import { SpecEntity, SpecGroupModel } from "@/utils/db/schema";
+import { useEffect, useState } from "react";
 import Spinner from "../common/Spinner";
 import { useAllSpecsQuery } from "@/logic/queries/useAllSpecsQuery";
 import SpecsPanelHeader from "./SpecsPanelHeader";
@@ -16,6 +16,18 @@ type Props = {
 export default function SpecsPanel(props: Props) {
 	const { data: specs, isFetching, isError } = useAllSpecsQuery();
 	const [selectedSpec, setSelectedSpec] = useState<SpecEntity | undefined>();
+	const [selectedGroup, setSelectedGroup] = useState<SpecGroupModel | undefined>();
+	const [shownSpecs, setShownSpecs] = useState<SpecEntity[]>([]);
+
+	useEffect(() => {
+		if (specs) {
+			if (selectedGroup) {
+				setShownSpecs(specs.filter((spec) => selectedGroup.specIds.includes(spec.id!)));
+			} else {
+				setShownSpecs(specs);
+			}
+		}
+	}, [selectedGroup, specs]);
 
 	const selectSpec = (spec: SpecEntity) => {
 		setSelectedSpec(spec);
@@ -25,7 +37,7 @@ export default function SpecsPanel(props: Props) {
 	return (
 		<div className={`${props.className}`}>
 			<SpecsPanelHeader />
-			<SpecGroupsPanel />
+			<SpecGroupsPanel onGroupChanged={setSelectedGroup} />
 			<div className="flex flex-col">
 				{isError && (
 					<div className="rounded-sm bg-red-700 p-2 text-lg text-white">
@@ -35,7 +47,7 @@ export default function SpecsPanel(props: Props) {
 				{isFetching && <Spinner />}
 				{!isFetching &&
 					!isError &&
-					specs?.map((spec) => (
+					shownSpecs?.map((spec) => (
 						<SpecsListElement
 							key={spec.id}
 							spec={spec}

@@ -1,11 +1,11 @@
 "use client";
 
-import { SpecGroupEntity } from "@/utils/db/schema";
+import { SpecGroupModel } from "@/utils/db/schema";
 
 type Props = {
-	group: SpecGroupEntity;
+	group: SpecGroupModel;
 	isSelected: boolean;
-	onClick: (group: SpecGroupEntity) => void;
+	onClick: (group: SpecGroupModel) => void;
 	className?: string;
 };
 
