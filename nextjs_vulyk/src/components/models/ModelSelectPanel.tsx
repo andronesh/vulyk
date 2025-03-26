@@ -20,7 +20,7 @@ export default function ModelSelectPanel(props: Props) {
 				створити модель
 			</Button>
 			{allModels?.map((model) => (
-				<div>
+				<div key={model.id}>
 					<b>{model.title}</b>
 					{":  " + model.options.map((option) => option.title).join(", ")}
 				</div>

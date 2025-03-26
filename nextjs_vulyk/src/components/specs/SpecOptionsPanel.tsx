@@ -65,9 +65,7 @@ export default function SpecOptionsPanel(props: Props) {
 									className={`bg-military-500 hover:bg-meadow-600 hover:text-military-600 m-1 flex flex-col rounded-sm px-2 pt-2 pb-1 text-white duration-300 hover:cursor-pointer hover:font-bold`}
 								>
 									{option.title}
-									{option.description && (
-										<span className="truncate text-sm italic">{props.spec.description}</span>
-									)}
+									{option.comment && <span className="truncate text-sm italic">{option.comment}</span>}
 								</div>
 							</DropdownMenuTrigger>
 							<DropdownMenuContent className="w-56">
