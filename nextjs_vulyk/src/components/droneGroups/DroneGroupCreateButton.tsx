@@ -13,7 +13,7 @@ export default function DroneGroupCreateButton(props: Props) {
 	const [isCreateOptionDialogOpen, setCreateOptionDialogOpen] = useState(false);
 
 	return (
-		<div className="flex justify-around">
+		<div className={`flex justify-around ${props.className}`}>
 			<Button variant="secondary" onClick={() => setCreateOptionDialogOpen(true)}>
 				додати групу
 			</Button>
