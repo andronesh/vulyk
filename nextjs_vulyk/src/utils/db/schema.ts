@@ -80,3 +80,16 @@ export const specOptionToModelRelationsTable = sqliteTable("spec_option_to_model
 		.references(() => specOptionsTable.id)
 		.notNull(),
 });
+
+export const droneGroupsTable = sqliteTable("drone_groups", {
+	id: int().primaryKey({ autoIncrement: true }),
+	amount: integer().notNull(),
+	optionsShort: text(),
+	comment: text(),
+	modelId: integer("model_id")
+		.references(() => modelsTable.id)
+		.notNull(),
+});
+
+export type DroneGroupFormData = typeof droneGroupsTable.$inferInsert;
+export type DroneGroupEntity = typeof droneGroupsTable.$inferSelect;
