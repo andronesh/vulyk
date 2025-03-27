@@ -6,6 +6,7 @@ import ButtonLoading from "../common/ButtonLoading";
 import ButtonGhost from "../common/ButtonGhost";
 import { DroneGroupFormData } from "@/utils/db/schema";
 import InputTextareaLabeled from "../common/InputTextareaLabeled";
+import { useQueryClient } from "@tanstack/react-query";
 import { ModelWithOptionsDto } from "@/logic/repo/modelsRepo";
 import { useAllModelsWithOptionsQuery } from "@/logic/queries/useAllModelsWithOptionsQuery";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
@@ -20,6 +21,7 @@ type Props = {
 };
 
 export default function DroneGroupCreateForm(props: Props) {
+	const queryClient = useQueryClient();
 	const [selectedModel, setSelectedModel] = useState<ModelWithOptionsDto>();
 	const { data: allModels } = useAllModelsWithOptionsQuery();
 
@@ -90,6 +92,7 @@ export default function DroneGroupCreateForm(props: Props) {
 		)
 			.then(() => {
 				cleanFormData();
+				queryClient.invalidateQueries({ queryKey: ["droneGroups"] });
 				props.onCreated();
 			})
 			.catch((error) => {

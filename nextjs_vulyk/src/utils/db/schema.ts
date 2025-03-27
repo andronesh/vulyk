@@ -93,3 +93,13 @@ export const droneGroupsTable = sqliteTable("drone_groups", {
 
 export type DroneGroupFormData = typeof droneGroupsTable.$inferInsert;
 export type DroneGroupEntity = typeof droneGroupsTable.$inferSelect;
+
+export const specOptionToDronesGroupRelationsTable = sqliteTable("spec_option_to_drone_group_relations", {
+	id: int().primaryKey({ autoIncrement: true }),
+	groupId: integer("group_id")
+		.references(() => droneGroupsTable.id)
+		.notNull(),
+	optionId: integer("option_id")
+		.references(() => specOptionsTable.id)
+		.notNull(),
+});

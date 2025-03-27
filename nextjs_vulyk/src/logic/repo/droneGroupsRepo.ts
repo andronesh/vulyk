@@ -2,12 +2,11 @@
 
 import { DB } from "@/utils/db";
 import {
+	DroneGroupEntity,
 	droneGroupsTable,
 	ModelEntity,
 	modelsTable,
-	SpecOptionEntity,
-	specOptionsTable,
-	specOptionToModelRelationsTable,
+	specOptionToDronesGroupRelationsTable,
 } from "@/utils/db/schema";
 import { eq } from "drizzle-orm";
 
@@ -25,29 +24,34 @@ export async function insertDroneGroup(
 			optionsShort: optionsShort?.trim() ? optionsShort.trim() : null,
 			comment: comment?.trim() ? comment.trim() : null,
 		});
+		const insertedGroupId = Number(insertGroupResult.lastInsertRowid);
+		if (insertedGroupId) {
+			for (let i = 0; i < optionIds.length; i++) {
+				await tx.insert(specOptionToDronesGroupRelationsTable).values({
+					groupId: insertedGroupId,
+					optionId: optionIds[i],
+				});
+			}
+		} else {
+			// TODO throw error?
+		}
 	});
 }
 
-export type ModelWithOptionsDto = ModelEntity & {
-	options: SpecOptionEntity[];
+export type DroneGroupWithModelDto = DroneGroupEntity & {
+	model: ModelEntity;
 };
 
-export async function listAllModelsWithOptions(): Promise<ModelWithOptionsDto[]> {
-	const rows = await DB.select()
-		.from(modelsTable)
-		.leftJoin(specOptionToModelRelationsTable, eq(modelsTable.id, specOptionToModelRelationsTable.modelId))
-		.leftJoin(specOptionsTable, eq(specOptionsTable.id, specOptionToModelRelationsTable.optionId))
-		.all();
-	const result = rows.reduce<Record<number, ModelWithOptionsDto>>((acc, row) => {
-		const model = row.models;
-		const option = row.spec_options;
-		if (!acc[model.id]) {
-			acc[model.id] = { ...model, options: [] };
-		}
-		if (option) {
-			acc[model.id].options.push(option);
-		}
-		return acc;
-	}, {});
-	return Object.values(result);
+export async function listAllDroneGroups(): Promise<DroneGroupWithModelDto[]> {
+	return (
+		await DB.select()
+			.from(droneGroupsTable)
+			.leftJoin(modelsTable, eq(droneGroupsTable.modelId, modelsTable.id))
+			.all()
+	).map((row) => {
+		return {
+			...row.drone_groups,
+			model: row.models!,
+		};
+	});
 }
