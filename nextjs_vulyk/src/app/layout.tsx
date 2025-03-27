@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import TanstackQueryClientProvider from "@/logic/queries/TanstackQueryClientProvider";
 import Link from "next/link";
+import { Tags } from "lucide-react";
 
 const geistSans = Geist({
 	variable: "--font-geist-sans",
@@ -146,6 +147,15 @@ export default function RootLayout({
 									<span className="ms-3 inline-flex h-3 w-3 items-center justify-center rounded-full bg-blue-100 p-3 text-sm font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300">
 										3
 									</span>
+								</Link>
+							</li>
+							<li>
+								<Link
+									href="/markers"
+									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
+								>
+									<Tags className="text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
+									<span className="ms-3 flex-1 whitespace-nowrap">Маркери</span>
 								</Link>
 							</li>
 						</ul>
