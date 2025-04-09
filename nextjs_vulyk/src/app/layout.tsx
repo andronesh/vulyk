@@ -158,6 +158,15 @@ export default function RootLayout({
 									<span className="ms-3 flex-1 whitespace-nowrap">Маркери</span>
 								</Link>
 							</li>
+							<li>
+								<Link
+									href="/betaflight"
+									className="group dark:hover:bg-military-500 flex items-center rounded-lg p-2 text-gray-900 hover:bg-gray-100 dark:text-white"
+								>
+									<Tags className="text-gray-500 transition duration-75 group-hover:text-gray-900 dark:text-gray-400 dark:group-hover:text-white" />
+									<span className="ms-3 flex-1 whitespace-nowrap">Betaflight</span>
+								</Link>
+							</li>
 						</ul>
 					</div>
 				</aside>
