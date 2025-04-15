@@ -5,6 +5,8 @@ import { useEffect, useState } from "react";
 
 export default function BetaflightPage() {
 	const [usbDevice, setUsbDevice] = useState<USBDevice>();
+	const [serialPort, setSerialPort] = useState<SerialPort>();
+	const [serialPortInfo, setSerialPortInfo] = useState<Partial<SerialPortInfo>>();
 
 	useEffect(() => {
 		if (navigator) {
@@ -44,7 +46,10 @@ export default function BetaflightPage() {
 	};
 
 	const connectToDevice = () => {
-		if (!usbDevice) return;
+		if (!usbDevice) {
+			console.warn("USB device is not setted, returning");
+			return;
+		}
 		usbDevice
 			.open()
 			.then(() => {
@@ -59,24 +64,51 @@ export default function BetaflightPage() {
 			});
 	};
 
-	// const connectToPort = async () => {
-	// 	const lol = await navigator.serial
-	// 		.requestPort()
-	// 		.then((port) => {
-	// 			port.open({ baudRate: 9600 });
-	// 			console.info(port.getInfo());
-	// 		})
-	// 		.catch((error) => {
-	// 			console.error(error);
-	// 		});
-	// };
+	const choosePort = () => {
+		navigator.serial
+			.requestPort()
+			.then((port) => {
+				setSerialPort(port);
+				setSerialPortInfo(port.getInfo());
+				return;
+			})
+			.catch((error) => {
+				console.error(error);
+			});
+	};
+
+	const connectToPort = async () => {
+		if (!serialPort) {
+			console.warn("Serial port is not setted, returning");
+			return;
+		}
+		console.info(serialPortInfo);
+		serialPort
+			.open({ baudRate: 9600 })
+			.then(() => {
+				window.alert("До порту підключено");
+			})
+			.catch((error) => {
+				console.error(`Failed to connect to port: ${serialPortInfo?.usbProductId}`, error);
+				window.alert(error);
+			});
+	};
 
 	return (
 		<div className="flex w-72 flex-col gap-2">
-			<div>Пристрій {usbDevice ? `: ${usbDevice.productName}` : ` не підключено`}</div>
-			<div className="flex w-72 flex-row gap-2">
-				<Button onClick={chooseDevice}>вибрати</Button>
-				<Button onClick={connectToDevice}>підєднатись</Button>
+			<div className="flex w-72 flex-col gap-2">
+				<div>Пристрій {usbDevice ? `: ${usbDevice.productName}` : ` не підключено`}</div>
+				<div className="flex w-72 flex-row gap-2">
+					<Button onClick={chooseDevice}>вибрати</Button>
+					<Button onClick={connectToDevice}>підєднатись</Button>
+				</div>
+			</div>
+			<div className="flex w-72 flex-col gap-2">
+				<div>Порт {serialPortInfo ? `: ${serialPortInfo.usbProductId}` : ` не підключено`}</div>
+				<div className="flex w-72 flex-row gap-2">
+					<Button onClick={choosePort}>вибрати</Button>
+					<Button onClick={connectToPort}>підєднатись</Button>
+				</div>
 			</div>
 		</div>
 	);
