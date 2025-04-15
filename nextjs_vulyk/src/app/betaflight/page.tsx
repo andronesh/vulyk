@@ -15,6 +15,7 @@ export default function BetaflightPage() {
 
 	const handleNewDevice = (event: USBConnectionEvent) => {
 		const device = event.device;
+		setUsbDevice(device);
 		console.info("handleNewDevice: ", device);
 		const info = {
 			path: `usb_${device.serialNumber}`,
@@ -25,7 +26,7 @@ export default function BetaflightPage() {
 		};
 
 		console.info(info);
-		connectToDevice(device);
+		connectToDevice();
 	};
 
 	const handleDeviceDisconnect = (event: USBConnectionEvent) => {
@@ -34,22 +35,28 @@ export default function BetaflightPage() {
 		setUsbDevice(undefined);
 	};
 
-	const connectToDrone = async () => {
+	const chooseDevice = async () => {
 		// console.info(navigator.usb);
 		const device = await navigator.usb.requestDevice({
 			filters: [{ vendorId: 0x0483 }], // STMicroelectronics, commonly used in FCs
 		});
-
-		await connectToDevice(device);
+		setUsbDevice(device);
 	};
 
-	const connectToDevice = async (device: USBDevice) => {
-		setUsbDevice(device);
-		await device.open();
-		if (device.configuration === null) {
-			await device.selectConfiguration(1);
-		}
-		await device.claimInterface(0);
+	const connectToDevice = () => {
+		if (!usbDevice) return;
+		usbDevice
+			.open()
+			.then(() => {
+				if (usbDevice.configuration === null) {
+					usbDevice.selectConfiguration(1);
+				}
+				usbDevice.claimInterface(0);
+			})
+			.catch((error) => {
+				console.error(`Failed to connect to device: ${usbDevice.productName}`, error);
+				window.alert(error);
+			});
 	};
 
 	// const connectToPort = async () => {
@@ -67,7 +74,10 @@ export default function BetaflightPage() {
 	return (
 		<div className="flex w-72 flex-col gap-2">
 			<div>Пристрій {usbDevice ? `: ${usbDevice.productName}` : ` не підключено`}</div>
-			<Button onClick={connectToDrone}>підєднатись до дрона</Button>
+			<div className="flex w-72 flex-row gap-2">
+				<Button onClick={chooseDevice}>вибрати</Button>
+				<Button onClick={connectToDevice}>підєднатись</Button>
+			</div>
 		</div>
 	);
 }
