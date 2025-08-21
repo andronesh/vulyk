@@ -4,69 +4,45 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 
 export default function BetaflightPage() {
-	const [usbDevice, setUsbDevice] = useState<USBDevice>();
 	const [serialPort, setSerialPort] = useState<SerialPort>();
 	const [serialPortInfo, setSerialPortInfo] = useState<Partial<SerialPortInfo>>();
+	const [serialPortConnected, setSerialPortConnected] = useState(false);
 
 	useEffect(() => {
-		if (navigator) {
-			navigator.usb.addEventListener("connect", handleNewDevice);
-			navigator.usb.addEventListener("disconnect", handleDeviceDisconnect);
-		}
-	}, []);
-
-	const handleNewDevice = (event: USBConnectionEvent) => {
-		const device = event.device;
-		setUsbDevice(device);
-		console.info("handleNewDevice: ", device);
-		const info = {
-			path: `usb_${device.serialNumber}`,
-			displayName: `Betaflight ${device.productName}`,
-			vendorId: device.manufacturerName,
-			productId: device.productName,
-			port: device,
-		};
-
-		console.info(info);
-		connectToDevice();
-	};
-
-	const handleDeviceDisconnect = (event: USBConnectionEvent) => {
-		console.info("handleDeviceDisconnect()", event);
-		// await usbDevice?.close();
-		setUsbDevice(undefined);
-	};
-
-	const chooseDevice = async () => {
-		// console.info(navigator.usb);
-		const device = await navigator.usb.requestDevice({
-			filters: [{ vendorId: 0x0483 }], // STMicroelectronics, commonly used in FCs
-		});
-		setUsbDevice(device);
-	};
-
-	const connectToDevice = () => {
-		if (!usbDevice) {
-			console.warn("USB device is not setted, returning");
+		if (!navigator.serial) {
+			window.alert("Ваш браузер не підтримує Web Serial API");
 			return;
 		}
-		usbDevice
-			.open()
-			.then(() => {
-				if (usbDevice.configuration === null) {
-					usbDevice.selectConfiguration(1);
+		if (!navigator.serial.getPorts) {
+			window.alert("Ваш браузер не підтримує Web Serial API getPorts");
+			return;
+		}
+		navigator.serial
+			.getPorts()
+			.then((ports) => {
+				for (let i = 0; i < ports.length; i++) {
+					console.log("---");
+					const portInfo = serialPort?.getInfo();
+					console.log(`   Location ID: ${portInfo?.locationId}`);
+					console.log(`   Manufacturer: ${portInfo?.manufacturer}`);
+					console.log(`   Serial Number: ${portInfo?.serialNumber}`);
+					console.log(`   Vendor: ${portInfo?.vendor}`);
+					console.log(`   Vendor ID: ${portInfo?.vendorId}`);
+					console.log(`   USB vendor ID: ${portInfo?.usbVendorId}`);
+					console.log(`   Product: ${portInfo?.product}`);
+					console.log(`   Product ID: ${portInfo?.productId}`);
+					console.log(`   USB product ID: ${portInfo?.usbProductId}`);
 				}
-				usbDevice.claimInterface(0);
 			})
 			.catch((error) => {
-				console.error(`Failed to connect to device: ${usbDevice.productName}`, error);
-				window.alert(error);
+				console.error("Failed to get available ports:", error);
+				window.alert("Не вдалося отримати доступні порти: " + error);
 			});
-	};
+	}, []);
 
-	const choosePort = () => {
+	const choosePort = async () => {
 		navigator.serial
-			.requestPort()
+			.requestPort({ filters: [{ usbVendorId: 1155 }] })
 			.then((port) => {
 				setSerialPort(port);
 				setSerialPortInfo(port.getInfo());
@@ -74,6 +50,7 @@ export default function BetaflightPage() {
 			})
 			.catch((error) => {
 				console.error(error);
+				window.alert("Не вдалося вибрати порт: " + error);
 			});
 	};
 
@@ -86,7 +63,7 @@ export default function BetaflightPage() {
 		serialPort
 			.open({ baudRate: 9600 })
 			.then(() => {
-				window.alert("До порту підключено");
+				setSerialPortConnected(true);
 			})
 			.catch((error) => {
 				console.error(`Failed to connect to port: ${serialPortInfo?.usbProductId}`, error);
@@ -94,20 +71,31 @@ export default function BetaflightPage() {
 			});
 	};
 
+	const disconnectFromPort = async () => {
+		if (!serialPort) {
+			console.warn("Serial port is not setted, returning");
+			return;
+		}
+		serialPort
+			.close()
+			.then(() => {
+				setSerialPortConnected(false);
+				window.alert("Від'єднано від порту");
+			})
+			.catch((error) => {
+				console.error(`Failed to disconnect from port: ${serialPortInfo?.usbProductId}`, error);
+				window.alert(error);
+			});
+	};
+
 	return (
 		<div className="flex w-72 flex-col gap-2">
 			<div className="flex w-72 flex-col gap-2">
-				<div>Пристрій {usbDevice ? `: ${usbDevice.productName}` : ` не підключено`}</div>
-				<div className="flex w-72 flex-row gap-2">
-					<Button onClick={chooseDevice}>вибрати</Button>
-					<Button onClick={connectToDevice}>підєднатись</Button>
-				</div>
-			</div>
-			<div className="flex w-72 flex-col gap-2">
 				<div>Порт {serialPortInfo ? `: ${serialPortInfo.usbProductId}` : ` не підключено`}</div>
 				<div className="flex w-72 flex-row gap-2">
-					<Button onClick={choosePort}>вибрати</Button>
-					<Button onClick={connectToPort}>підєднатись</Button>
+					{!serialPort && <Button onClick={choosePort}>вибрати</Button>}
+					{serialPort && !serialPortConnected && <Button onClick={connectToPort}>під'єднатись</Button>}
+					{serialPort && serialPortConnected && <Button onClick={disconnectFromPort}>від'єднатись</Button>}
 				</div>
 			</div>
 		</div>
