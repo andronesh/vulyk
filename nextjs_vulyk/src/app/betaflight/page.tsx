@@ -91,8 +91,10 @@ export default function BetaflightPage() {
 	return (
 		<div className="flex w-72 flex-col gap-2">
 			<div className="flex w-72 flex-col gap-2">
-				<div>Порт {serialPortInfo ? `: ${serialPortInfo.usbProductId}` : ` не підключено`}</div>
-				<div className="flex w-72 flex-row gap-2">
+				<div className="flex w-72 flex-row justify-between">
+					<h2 className="text-2xl font-bold">
+						Порт {serialPortInfo ? `: ${serialPortInfo.usbProductId}` : ``}
+					</h2>
 					{!serialPort && <Button onClick={choosePort}>вибрати</Button>}
 					{serialPort && !serialPortConnected && <Button onClick={connectToPort}>під'єднатись</Button>}
 					{serialPort && serialPortConnected && <Button onClick={disconnectFromPort}>від'єднатись</Button>}
