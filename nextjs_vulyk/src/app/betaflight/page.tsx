@@ -1,44 +1,15 @@
 "use client";
 
+import InputTextLabeled from "@/components/common/InputTextLabeled";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function BetaflightPage() {
 	const [serialPort, setSerialPort] = useState<SerialPort>();
 	const [serialPortInfo, setSerialPortInfo] = useState<Partial<SerialPortInfo>>();
 	const [serialPortConnected, setSerialPortConnected] = useState(false);
 
-	useEffect(() => {
-		if (!navigator.serial) {
-			window.alert("Ваш браузер не підтримує Web Serial API");
-			return;
-		}
-		if (!navigator.serial.getPorts) {
-			window.alert("Ваш браузер не підтримує Web Serial API getPorts");
-			return;
-		}
-		navigator.serial
-			.getPorts()
-			.then((ports) => {
-				for (let i = 0; i < ports.length; i++) {
-					console.log("---");
-					const portInfo = serialPort?.getInfo();
-					console.log(`   Location ID: ${portInfo?.locationId}`);
-					console.log(`   Manufacturer: ${portInfo?.manufacturer}`);
-					console.log(`   Serial Number: ${portInfo?.serialNumber}`);
-					console.log(`   Vendor: ${portInfo?.vendor}`);
-					console.log(`   Vendor ID: ${portInfo?.vendorId}`);
-					console.log(`   USB vendor ID: ${portInfo?.usbVendorId}`);
-					console.log(`   Product: ${portInfo?.product}`);
-					console.log(`   Product ID: ${portInfo?.productId}`);
-					console.log(`   USB product ID: ${portInfo?.usbProductId}`);
-				}
-			})
-			.catch((error) => {
-				console.error("Failed to get available ports:", error);
-				window.alert("Не вдалося отримати доступні порти: " + error);
-			});
-	}, []);
+	const [typedCommand, setTypedCommand] = useState("");
 
 	const choosePort = async () => {
 		navigator.serial
@@ -61,14 +32,38 @@ export default function BetaflightPage() {
 		}
 		console.info(serialPortInfo);
 		serialPort
-			.open({ baudRate: 9600 })
+			.open({ baudRate: 115200 })
 			.then(() => {
 				setSerialPortConnected(true);
+				initReader();
 			})
 			.catch((error) => {
 				console.error(`Failed to connect to port: ${serialPortInfo?.usbProductId}`, error);
 				window.alert(error);
 			});
+	};
+
+	const initReader = async () => {
+		if (!serialPort) {
+			console.warn("Serial port is not setted, returning");
+			return;
+		}
+		const textDecoder = new TextDecoderStream();
+		serialPort.readable?.pipeTo(textDecoder.writable);
+		const reader = textDecoder.readable.getReader();
+
+		while (true) {
+			const { value, done } = await reader.read();
+			if (done) {
+				console.log("Reader has been closed");
+				reader.releaseLock();
+				break;
+			}
+			console.log(value);
+			if (value.endsWith("# ")) {
+				console.warn("-------- LAST LINE --------");
+			}
+		}
 	};
 
 	const disconnectFromPort = async () => {
@@ -88,6 +83,29 @@ export default function BetaflightPage() {
 			});
 	};
 
+	const executeBfCommand = async () => {
+		if (!serialPort) {
+			console.warn("Serial port is not setted, returning");
+			return;
+		}
+
+		const textEncoder = new TextEncoder();
+		const writer = serialPort.writable?.getWriter();
+		if (!writer) {
+			console.error("No writable stream available on serialPort");
+			return;
+		}
+		try {
+			await writer.write(textEncoder.encode(typedCommand + "\r\n"));
+			setTypedCommand("");
+		} catch (err: any) {
+			console.error("Error entering CLI:", err.message);
+		} finally {
+			console.info("Releasing writer lock");
+			writer.releaseLock();
+		}
+	};
+
 	return (
 		<div className="flex w-72 flex-col gap-2">
 			<div className="flex w-72 flex-col gap-2">
@@ -99,6 +117,17 @@ export default function BetaflightPage() {
 					{serialPort && !serialPortConnected && <Button onClick={connectToPort}>під'єднатись</Button>}
 					{serialPort && serialPortConnected && <Button onClick={disconnectFromPort}>від'єднатись</Button>}
 				</div>
+				{serialPort && serialPortConnected && (
+					<div className="flex w-72 flex-row items-end justify-between">
+						<InputTextLabeled
+							label="команда"
+							name="command"
+							value={typedCommand}
+							onChange={(event) => setTypedCommand(event.target.value)}
+						/>
+						<Button onClick={executeBfCommand}>execute</Button>
+					</div>
+				)}
 			</div>
 		</div>
 	);
