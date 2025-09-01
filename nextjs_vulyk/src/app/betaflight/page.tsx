@@ -11,6 +11,7 @@ export default function BetaflightPage() {
 	const [serialPortConnected, setSerialPortConnected] = useState(false);
 
 	const [typedCommand, setTypedCommand] = useState("");
+	const [bfDump, setBfDump] = useState("");
 
 	const choosePort = async () => {
 		SerialUtils.choosePort()
@@ -67,8 +68,22 @@ export default function BetaflightPage() {
 		setTypedCommand("");
 	};
 
+	const getBfFullDump = async () => {
+		let dump = "";
+		const port = await SerialUtils.choosePort();
+		await SerialUtils.connectToPort(port);
+		await SerialUtils.writeToSerial(port, "#\r\n");
+		dump += await SerialUtils.readFromSerial(port);
+		await SerialUtils.writeToSerial(port, "dump all\r\n");
+		dump += await SerialUtils.readFromSerial(port);
+		dump = dump.replace("Entering CLI Mode, type 'exit' to return, or 'help'", "#").trim();
+		setBfDump(dump);
+		await SerialUtils.writeToSerial(port, "exit\r\n");
+		await SerialUtils.disconnectFromPort(port);
+	};
+
 	return (
-		<div className="flex w-full flex-col gap-2">
+		<div className="flex w-full flex-row gap-4">
 			<div className="flex w-72 flex-col gap-2">
 				<div className="flex w-72 flex-row justify-between">
 					<h2 className="text-2xl font-bold">
@@ -89,7 +104,14 @@ export default function BetaflightPage() {
 						<Button onClick={executeBfCommand}>execute</Button>
 					</div>
 				)}
+				<Button onClick={getBfFullDump}>dump all</Button>
 			</div>
+			{bfDump && (
+				<div className="flex flex-col">
+					<h3 className="mb-2 text-2xl font-bold">Повний дамп Betaflight:</h3>
+					<pre className="bg-military-500 flex rounded-md p-2">{bfDump}</pre>
+				</div>
+			)}
 		</div>
 	);
 }
