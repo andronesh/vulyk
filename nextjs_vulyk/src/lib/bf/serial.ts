@@ -39,7 +39,12 @@ const SerialUtils = {
 		let result = "";
 
 		while (true) {
-			const { value, done } = await reader.read();
+			const readPromise = reader.read();
+			const timeoutPromise = new Promise<{ value: Uint8Array | undefined; done: boolean }>((resolve) =>
+				setTimeout(() => resolve({ value: undefined, done: true }), 777),
+			);
+
+			const { value, done } = await Promise.race([readPromise, timeoutPromise]);
 			const textValue = textDecoder.decode(value);
 
 			if (done) {
@@ -48,11 +53,6 @@ const SerialUtils = {
 				break;
 			}
 			result += textValue;
-			if (textValue.endsWith("# ")) {
-				console.debug("----- LAST LINE, releasing reader lock -----");
-				reader.releaseLock();
-				break;
-			}
 		}
 		return new Promise((resolve) => {
 			resolve(result);
