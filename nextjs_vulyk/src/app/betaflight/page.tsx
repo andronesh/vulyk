@@ -35,7 +35,6 @@ export default function BetaflightPage() {
 			.open({ baudRate: 115200 })
 			.then(() => {
 				setSerialPortConnected(true);
-				initReader();
 			})
 			.catch((error) => {
 				console.error(`Failed to connect to port: ${serialPortInfo?.usbProductId}`, error);
@@ -43,26 +42,59 @@ export default function BetaflightPage() {
 			});
 	};
 
-	const initReader = async () => {
+	const readFromSerial = async (): Promise<string> => {
 		if (!serialPort) {
 			console.warn("Serial port is not setted, returning");
-			return;
+			return new Promise((resolve, reject) => reject("Serial port is not setted, returning"));
 		}
-		const textDecoder = new TextDecoderStream();
-		serialPort.readable?.pipeTo(textDecoder.writable);
-		const reader = textDecoder.readable.getReader();
+		const textDecoder = new TextDecoder();
+		const reader = serialPort.readable?.getReader();
+		if (!reader) {
+			console.error("No readable stream available on serialPort");
+			return new Promise((resolve, reject) => reject("No readable stream available on serialPort"));
+		}
+		let result = "";
 
 		while (true) {
 			const { value, done } = await reader.read();
+			const textValue = textDecoder.decode(value);
+
 			if (done) {
 				console.log("Reader has been closed");
 				reader.releaseLock();
 				break;
 			}
-			console.log(value);
-			if (value.endsWith("# ")) {
-				console.warn("-------- LAST LINE --------");
+			result += textValue;
+			if (textValue.endsWith("# ")) {
+				console.warn("----- LAST LINE, releasing reader lock -----");
+				reader.releaseLock();
+				break;
 			}
+		}
+		return new Promise((resolve) => {
+			resolve(result);
+		});
+	};
+
+	const writeToSerial = async (inputLine: string) => {
+		if (!serialPort) {
+			console.warn("Serial port is not setted, returning");
+			return;
+		}
+
+		const textEncoder = new TextEncoder();
+		const writer = serialPort.writable?.getWriter();
+		if (!writer) {
+			console.error("No writable stream available on serialPort");
+			return;
+		}
+		try {
+			await writer.write(textEncoder.encode(inputLine));
+		} catch (err: any) {
+			console.error("Writing to serial:", err.message);
+		} finally {
+			console.info("Releasing writer lock");
+			writer.releaseLock();
 		}
 	};
 
@@ -88,26 +120,15 @@ export default function BetaflightPage() {
 			console.warn("Serial port is not setted, returning");
 			return;
 		}
-
-		const textEncoder = new TextEncoder();
-		const writer = serialPort.writable?.getWriter();
-		if (!writer) {
-			console.error("No writable stream available on serialPort");
-			return;
-		}
-		try {
-			await writer.write(textEncoder.encode(typedCommand + "\r\n"));
-			setTypedCommand("");
-		} catch (err: any) {
-			console.error("Error entering CLI:", err.message);
-		} finally {
-			console.info("Releasing writer lock");
-			writer.releaseLock();
-		}
+		await writeToSerial(typedCommand + "\r\n");
+		const result = await readFromSerial();
+		console.info("Serial output:");
+		console.info(result);
+		setTypedCommand("");
 	};
 
 	return (
-		<div className="flex w-72 flex-col gap-2">
+		<div className="flex w-full flex-col gap-2">
 			<div className="flex w-72 flex-col gap-2">
 				<div className="flex w-72 flex-row justify-between">
 					<h2 className="text-2xl font-bold">
