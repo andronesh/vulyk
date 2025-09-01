@@ -2,6 +2,7 @@
 
 import InputTextLabeled from "@/components/common/InputTextLabeled";
 import { Button } from "@/components/ui/button";
+import SerialUtils from "@/lib/bf/serial";
 import { useState } from "react";
 
 export default function BetaflightPage() {
@@ -12,12 +13,10 @@ export default function BetaflightPage() {
 	const [typedCommand, setTypedCommand] = useState("");
 
 	const choosePort = async () => {
-		navigator.serial
-			.requestPort({ filters: [{ usbVendorId: 1155 }] })
+		SerialUtils.choosePort()
 			.then((port) => {
 				setSerialPort(port);
 				setSerialPortInfo(port.getInfo());
-				return;
 			})
 			.catch((error) => {
 				console.error(error);
@@ -30,9 +29,7 @@ export default function BetaflightPage() {
 			console.warn("Serial port is not setted, returning");
 			return;
 		}
-		console.info(serialPortInfo);
-		serialPort
-			.open({ baudRate: 115200 })
+		SerialUtils.connectToPort(serialPort)
 			.then(() => {
 				setSerialPortConnected(true);
 			})
@@ -42,69 +39,12 @@ export default function BetaflightPage() {
 			});
 	};
 
-	const readFromSerial = async (): Promise<string> => {
-		if (!serialPort) {
-			console.warn("Serial port is not setted, returning");
-			return new Promise((resolve, reject) => reject("Serial port is not setted, returning"));
-		}
-		const textDecoder = new TextDecoder();
-		const reader = serialPort.readable?.getReader();
-		if (!reader) {
-			console.error("No readable stream available on serialPort");
-			return new Promise((resolve, reject) => reject("No readable stream available on serialPort"));
-		}
-		let result = "";
-
-		while (true) {
-			const { value, done } = await reader.read();
-			const textValue = textDecoder.decode(value);
-
-			if (done) {
-				console.log("Reader has been closed");
-				reader.releaseLock();
-				break;
-			}
-			result += textValue;
-			if (textValue.endsWith("# ")) {
-				console.warn("----- LAST LINE, releasing reader lock -----");
-				reader.releaseLock();
-				break;
-			}
-		}
-		return new Promise((resolve) => {
-			resolve(result);
-		});
-	};
-
-	const writeToSerial = async (inputLine: string) => {
-		if (!serialPort) {
-			console.warn("Serial port is not setted, returning");
-			return;
-		}
-
-		const textEncoder = new TextEncoder();
-		const writer = serialPort.writable?.getWriter();
-		if (!writer) {
-			console.error("No writable stream available on serialPort");
-			return;
-		}
-		try {
-			await writer.write(textEncoder.encode(inputLine));
-		} catch (err: any) {
-			console.error("Writing to serial:", err.message);
-		} finally {
-			console.info("Releasing writer lock");
-			writer.releaseLock();
-		}
-	};
-
 	const disconnectFromPort = async () => {
 		if (!serialPort) {
 			console.warn("Serial port is not setted, returning");
 			return;
 		}
-		serialPort
-			.close()
+		SerialUtils.disconnectFromPort(serialPort)
 			.then(() => {
 				setSerialPortConnected(false);
 				window.alert("Від'єднано від порту");
@@ -120,8 +60,8 @@ export default function BetaflightPage() {
 			console.warn("Serial port is not setted, returning");
 			return;
 		}
-		await writeToSerial(typedCommand + "\r\n");
-		const result = await readFromSerial();
+		await SerialUtils.writeToSerial(serialPort, typedCommand + "\r\n");
+		const result = await SerialUtils.readFromSerial(serialPort);
 		console.info("Serial output:");
 		console.info(result);
 		setTypedCommand("");
