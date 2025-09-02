@@ -4,7 +4,7 @@ type Props = {
 	label: string;
 	name: string;
 	value: string | undefined;
-	placeholder: string;
+	placeholder?: string;
 	disabled?: boolean;
 	required?: boolean;
 	onChange?: (event: ChangeEvent<HTMLInputElement>) => void;

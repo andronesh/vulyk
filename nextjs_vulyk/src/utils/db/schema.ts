@@ -103,3 +103,17 @@ export const specOptionToDronesGroupRelationsTable = sqliteTable("spec_option_to
 		.references(() => specOptionsTable.id)
 		.notNull(),
 });
+
+export const bfDumpsTable = sqliteTable("bf_dumps", {
+	id: int().primaryKey({ autoIncrement: true }),
+	bfVersion: text("bf_version").notNull(),
+	boardName: text("board_name").notNull(),
+	boardManuf: text("board_manuf").notNull(),
+	title: text().notNull(),
+	content: text().notNull(),
+	comment: text(),
+	modelId: integer("model_id").references(() => modelsTable.id), // TODO: should be separate table with n-to-n relation?
+});
+
+export type BfDumpFormData = typeof bfDumpsTable.$inferInsert;
+export type BfDumpEntity = typeof bfDumpsTable.$inferSelect;

@@ -37,7 +37,7 @@ export default function ModelsPanel(props: Props) {
 						/>
 					))}
 			</div>
-			{selectedModel && <ModelDetailsPanel model={selectedModel} className="w-72" />}
+			{selectedModel && <ModelDetailsPanel model={selectedModel} />}
 		</div>
 	);
 }
