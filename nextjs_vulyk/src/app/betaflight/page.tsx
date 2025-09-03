@@ -90,8 +90,10 @@ export default function BetaflightPage() {
 						Порт {serialPortInfo ? `: ${serialPortInfo.usbProductId}` : ``}
 					</h2>
 					{!serialPort && <Button onClick={choosePort}>вибрати</Button>}
-					{serialPort && !serialPortConnected && <Button onClick={connectToPort}>під'єднатись</Button>}
-					{serialPort && serialPortConnected && <Button onClick={disconnectFromPort}>від'єднатись</Button>}
+					{serialPort && !serialPortConnected && <Button onClick={connectToPort}>під&apos;єднатись</Button>}
+					{serialPort && serialPortConnected && (
+						<Button onClick={disconnectFromPort}>від&apos;єднатись</Button>
+					)}
 				</div>
 				{serialPort && serialPortConnected && (
 					<div className="flex w-72 flex-row items-end justify-between">

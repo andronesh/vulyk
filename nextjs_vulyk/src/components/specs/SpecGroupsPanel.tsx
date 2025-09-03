@@ -18,7 +18,7 @@ export default function SpecGroupsPanel(props: Props) {
 
 	useEffect(() => {
 		props.onGroupChanged(selectedGroup);
-	}, [selectedGroup]);
+	}, [selectedGroup]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	return (
 		<div className={`${props.className}`}>

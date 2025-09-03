@@ -43,7 +43,7 @@ export default function SpecCreateForm(props: Props) {
 			});
 			setSpecSelectorItems(items);
 		}
-	}, [specs]);
+	}, [specs]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const toggleSpecSelection = (specId: number, isSelected: boolean) => {
 		setSpecSelectorItems((prevState) => {

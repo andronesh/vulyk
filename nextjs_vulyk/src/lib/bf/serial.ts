@@ -73,6 +73,7 @@ const SerialUtils = {
 		}
 		try {
 			await writer.write(textEncoder.encode(inputLine));
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (err: any) {
 			console.error("Writing to serial:", err.message);
 		} finally {

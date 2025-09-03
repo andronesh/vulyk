@@ -32,7 +32,7 @@ export default function BfDumpEditForm(props: Props) {
 		if (newBfDumpFormData?.content) {
 			parseBfDump();
 		}
-	}, [newBfDumpFormData?.content]);
+	}, [newBfDumpFormData?.content]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const updateTextValue = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
 		if (event.target.value) {

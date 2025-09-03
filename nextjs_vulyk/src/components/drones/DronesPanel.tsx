@@ -15,7 +15,7 @@ export default function DronesPanel(props: Props) {
 
 	useEffect(() => {
 		refreshDronesList();
-	}, [props.selectedMarker]);
+	}, [props.selectedMarker]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const refreshDronesList = () => {
 		const result = props.selectedMarker ? getDronesWithMarker(props.selectedMarker.title) : listAllDrones();
@@ -29,11 +29,11 @@ export default function DronesPanel(props: Props) {
 		<div className={`flex flex-col ${props.className}`}>
 			<DronesPanelHeader marker={props.selectedMarker} onCreated={refreshDronesList} />
 			{drones.length > 0 && (
-				<div className="rounded-md border-4 border-military-500">
+				<div className="border-military-500 rounded-md border-4">
 					{drones.map((drone) => (
 						<div
 							key={drone.id}
-							className="border-military-500 p-2 font-semibold hover:cursor-pointer hover:bg-military-500 hover:font-bold not-last:border-b-2"
+							className="border-military-500 hover:bg-military-500 p-2 font-semibold not-last:border-b-2 hover:cursor-pointer hover:font-bold"
 						>
 							{drone.markerTitle}-{drone.markerNumber}
 						</div>
