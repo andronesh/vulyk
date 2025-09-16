@@ -44,8 +44,8 @@ export default function DroneCreateForm(props: Props) {
 				<InputTextLabeled
 					label="номер"
 					name="markerNumber"
-					value={newDroneData.markerNumber}
-					disabled={newDroneData.markerNumber !== undefined}
+					value={newDroneData.markerNumber ? newDroneData.markerNumber : ""}
+					disabled={props.marker.autoInc}
 					placeholder="111"
 					onChange={(event) => {
 						setNewDroneData((prevData) => {
