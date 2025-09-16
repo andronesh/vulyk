@@ -8,11 +8,17 @@ export async function listAllMarkers(): Promise<MarkerEntity[]> {
 	return await DB.select().from(markersTable);
 }
 
-export async function createMarker(title: string, autoIncrement: boolean, startNumber: number | null) {
+export async function createMarker(
+	slug: string,
+	comment: string | null,
+	autoIncrement: boolean,
+	lastNumber: number | null,
+) {
 	await DB.insert(markersTable).values({
-		title: title.trim().toUpperCase(),
+		slug: slug.trim().toUpperCase(),
+		comment: comment ? comment.trim() : null,
 		autoInc: autoIncrement,
-		lastNumber: startNumber ? startNumber : null,
+		lastNumber: autoIncrement ? lastNumber : null,
 	});
 }
 

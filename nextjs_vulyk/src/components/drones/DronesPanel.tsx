@@ -18,7 +18,7 @@ export default function DronesPanel(props: Props) {
 	}, [props.selectedMarker]); // eslint-disable-line react-hooks/exhaustive-deps
 
 	const refreshDronesList = () => {
-		const result = props.selectedMarker ? getDronesWithMarker(props.selectedMarker.title) : listAllDrones();
+		const result = props.selectedMarker ? getDronesWithMarker(props.selectedMarker.slug) : listAllDrones();
 		result.then(setDrones).catch((error) => {
 			console.error("Failed to load drones from DB", error);
 			window.alert(JSON.stringify(error)); // TODO beautify errors

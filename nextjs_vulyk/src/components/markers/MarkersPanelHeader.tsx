@@ -17,13 +17,18 @@ export default function MarkersPanelHeader(props: Props) {
 		setInCreateMode((prevInCreateMode) => !prevInCreateMode);
 	};
 
-	const doCreateMarker = async (title: string, autoInc: boolean, startNumber: number | null) => {
+	const doCreateMarker = async (
+		slug: string,
+		comment: string | null,
+		autoInc: boolean,
+		lastNumber: number | null,
+	) => {
 		try {
-			await createMarker(title, autoInc, startNumber);
+			await createMarker(slug, comment, autoInc, lastNumber);
 			toggleCreateMode();
 			queryClient.invalidateQueries({ queryKey: ["markers"] });
 		} catch (error) {
-			console.error(`Failed to create marker with title=${title} and startNumber=${startNumber}`, error);
+			console.error(`Failed to create marker with slug=${slug} and lastNumber=${lastNumber}`, error);
 			window.alert(error); //TODO beautify
 		}
 	};

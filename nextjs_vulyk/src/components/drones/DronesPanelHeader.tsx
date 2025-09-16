@@ -21,7 +21,7 @@ export default function DronesPanelHeader(props: Props) {
 
 	const doCreateDrone = async (markerNumber: string, comment?: string) => {
 		try {
-			await createDrone(props.marker.title, markerNumber, comment);
+			await createDrone(props.marker.slug, markerNumber, comment);
 			if (props.marker.autoInc) {
 				updateMarkerLastNumber(props.marker.id!, +markerNumber); // TODO do it in transaction
 				// TODO: update lastNumber inside selected marker model (probably using some state manager)
@@ -30,7 +30,7 @@ export default function DronesPanelHeader(props: Props) {
 			props.onCreated();
 		} catch (error) {
 			console.error(
-				`Failed to create drone with marker=${props.marker.title}, number=${markerNumber}, and comment="${comment}"`,
+				`Failed to create drone with marker=${props.marker.slug}, number=${markerNumber}, and comment="${comment}"`,
 				error,
 			);
 			window.alert(error); //TODO beautify
@@ -43,7 +43,7 @@ export default function DronesPanelHeader(props: Props) {
 				<span className="text-lg font-bold">Дрони:</span>
 				{!inCreateMode && (
 					<span
-						className="rounded-sm px-3 py-1 duration-300 hover:cursor-pointer hover:bg-military-500 hover:font-bold"
+						className="hover:bg-military-500 rounded-sm px-3 py-1 duration-300 hover:cursor-pointer hover:font-bold"
 						onClick={toggleCreateMode}
 					>
 						додати дрон

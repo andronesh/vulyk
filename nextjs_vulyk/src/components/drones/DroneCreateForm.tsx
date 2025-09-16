@@ -18,7 +18,7 @@ type Props = {
 export default function DroneCreateForm(props: Props) {
 	const [newDroneData, setNewDroneData] = useState<DroneEditableData>({
 		markerTitle: "",
-		markerNumber: props.marker.lastNumber ? (props.marker.lastNumber + 1).toString() : undefined,
+		markerNumber: props.marker.lastNumber !== null ? (props.marker.lastNumber + 1).toString() : undefined,
 	});
 
 	const createDrone = () => {
@@ -35,7 +35,7 @@ export default function DroneCreateForm(props: Props) {
 				<InputTextLabeled
 					label="маркер"
 					name="markerTitle"
-					value={props.marker.title}
+					value={props.marker.slug}
 					placeholder="AAA"
 					disabled={true}
 					onChange={() => {}}

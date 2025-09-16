@@ -3,36 +3,51 @@
 import { useState } from "react";
 import InputTextLabeled from "../common/InputTextLabeled";
 import ButtonLoading from "../common/ButtonLoading";
-import { Marker } from "./types";
 import ButtonGhost from "../common/ButtonGhost";
 import InputCheckbox from "../common/InputCheckbox";
+import { MarkerFormData } from "@/utils/db/schema";
+import InputTextareaLabeled from "../common/InputTextareaLabeled";
 
 type Props = {
-	onCreate: (title: string, autoInc: boolean, startNumber: number | null) => void;
+	onCreate: (slug: string, comment: string | null, autoInc: boolean, lastNumber: number | null) => void;
 	onCancel: () => void;
 	className?: string;
 };
 
 export default function MarkerCreateForm(props: Props) {
-	const [newMarkerData, setNewMarkerData] = useState<Marker>({
-		title: "",
+	const [newMarkerData, setNewMarkerData] = useState<MarkerFormData>({
+		// TODO replace with ZOD schema, and remove "newMarkerData.autoInc ? true : false" everywhene
+		slug: "",
+		comment: "",
 		autoInc: false,
-		startNumber: 111,
+		lastNumber: 0,
 	});
 
 	const createMarker = () => {
-		if (!newMarkerData.title || newMarkerData.title.trim() === "") {
+		if (!newMarkerData.slug || newMarkerData.slug.trim() === "") {
 			window.alert(`Поле "скорочення" не має бути пустим`); // TODO show it as message inside form
 			return;
 		}
-		if (newMarkerData.autoInc && (newMarkerData.startNumber === null || newMarkerData.startNumber < 100)) {
-			window.alert(`Поле "почати з" має бути більше 99`); // TODO show it as message inside form
+		if (
+			newMarkerData.autoInc &&
+			(newMarkerData.lastNumber === null ||
+				newMarkerData.lastNumber === undefined ||
+				newMarkerData.lastNumber < 0)
+		) {
+			window.alert(`Поле "нумерувати після" має бути більше 0`); // TODO show it as message inside form
 			return;
 		}
+		console.info(
+			"newMarkerData.autoInc && newMarkerData.lastNumber !== null && newMarkerData.lastNumber !== undefined: " +
+				(newMarkerData.autoInc && newMarkerData.lastNumber !== null && newMarkerData.lastNumber !== undefined),
+		);
 		props.onCreate(
-			newMarkerData.title,
-			newMarkerData.autoInc,
-			newMarkerData.autoInc ? newMarkerData.startNumber : null,
+			newMarkerData.slug,
+			newMarkerData.comment ? newMarkerData.comment : null,
+			newMarkerData.autoInc ? true : false,
+			newMarkerData.lastNumber !== null && newMarkerData.lastNumber !== undefined
+				? newMarkerData.lastNumber
+				: null,
 		);
 	};
 
@@ -41,19 +56,19 @@ export default function MarkerCreateForm(props: Props) {
 			<div className="flex flex-col">
 				<InputTextLabeled
 					label="скорочення"
-					name="title"
-					value={newMarkerData.title}
+					name="slug"
+					value={newMarkerData.slug}
 					placeholder="AAA"
 					onChange={(event) => {
 						setNewMarkerData((prevData) => {
-							return { ...prevData, title: event.target.value };
+							return { ...prevData, slug: event.target.value };
 						});
 					}}
 				/>
 				<InputCheckbox
 					label={"автонумерація"}
 					name={"autoInc"}
-					value={newMarkerData.autoInc}
+					value={newMarkerData.autoInc ? true : false}
 					onChange={(event) => {
 						setNewMarkerData((prevData) => {
 							return { ...prevData, autoInc: event.target.checked };
@@ -63,22 +78,37 @@ export default function MarkerCreateForm(props: Props) {
 				/>
 				{newMarkerData.autoInc && (
 					<InputTextLabeled
-						label="стартовий номер"
-						name="startNumber"
-						value={newMarkerData.startNumber ? newMarkerData.startNumber.toString() : ""}
+						label="нумерувати після"
+						name="lastNumber"
+						value={
+							newMarkerData.lastNumber !== null && newMarkerData.lastNumber !== undefined
+								? newMarkerData.lastNumber.toString()
+								: ""
+						}
 						placeholder="111"
 						onChange={(event) => {
 							const newValue = event.target.value;
 							if (isNaN(+newValue)) {
-								window.alert(`"стартовий номер" повинен бути числом від 100`); // TODO show it as message inside form
+								window.alert(`"нумерувати після" повинен бути числом`); // TODO show it as message inside form
 							} else {
 								setNewMarkerData((prevData) => {
-									return { ...prevData, startNumber: +newValue };
+									return { ...prevData, lastNumber: +newValue };
 								});
 							}
 						}}
 					/>
 				)}
+				<InputTextareaLabeled
+					label={"коментар"}
+					name={"comment"}
+					value={newMarkerData?.comment}
+					rows={5}
+					onChange={(event) => {
+						setNewMarkerData((prevData) => {
+							return { ...prevData, comment: event.target.value };
+						});
+					}}
+				/>
 			</div>
 			<div className="mt-3 flex flex-row justify-between">
 				<ButtonGhost title="Скасувати" onClick={props.onCancel} />
