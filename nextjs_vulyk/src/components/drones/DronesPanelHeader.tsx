@@ -5,6 +5,7 @@ import { updateMarkerLastNumber } from "@/logic/repo/markersRepo";
 import { MarkerEntity } from "@/utils/db/schema";
 import DroneCreateForm from "./DroneCreateForm";
 import { createDrone } from "@/logic/repo/dronesRepo";
+import { useQueryClient } from "@tanstack/react-query";
 
 type Props = {
 	marker: MarkerEntity;
@@ -13,6 +14,7 @@ type Props = {
 };
 
 export default function DronesPanelHeader(props: Props) {
+	const queryClient = useQueryClient();
 	const [inCreateMode, setInCreateMode] = useState(false);
 
 	const toggleCreateMode = () => {
@@ -24,7 +26,7 @@ export default function DronesPanelHeader(props: Props) {
 			await createDrone(props.marker.slug, markerNumber, comment);
 			if (props.marker.autoInc) {
 				updateMarkerLastNumber(props.marker.id!, +markerNumber); // TODO do it in transaction
-				// TODO: update lastNumber inside selected marker model (probably using some state manager)
+				queryClient.invalidateQueries({ queryKey: ["markers"] });
 			}
 			toggleCreateMode();
 			props.onCreated();

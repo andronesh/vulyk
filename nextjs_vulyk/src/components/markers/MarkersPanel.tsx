@@ -2,19 +2,34 @@
 
 import { MarkerEntity } from "@/utils/db/schema";
 import MarkersPanelHeader from "./MarkersPanelHeader";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MarkerChip from "./MarkerChip";
 import Spinner from "../common/Spinner";
 import { useAllMarkersQuery } from "@/logic/queries/useAllMarkersQuery";
 
 type Props = {
-	onMarkerSelected: (marker: MarkerEntity) => void;
+	onMarkerSelected: (marker: MarkerEntity | undefined) => void;
 	className?: string;
 };
 
 export default function MarkersPanel(props: Props) {
 	const { data: markers, isFetching, isError } = useAllMarkersQuery();
 	const [selectedMarker, setSelectedMarker] = useState<MarkerEntity | undefined>();
+
+	useEffect(() => {
+		if (markers && selectedMarker) {
+			const marker = markers.find((m) => m.id === selectedMarker?.id);
+			if (marker) {
+				if (JSON.stringify(marker) !== JSON.stringify(selectedMarker)) {
+					setSelectedMarker(marker);
+					props.onMarkerSelected(marker);
+				}
+			} else {
+				setSelectedMarker(undefined);
+				props.onMarkerSelected(undefined);
+			}
+		}
+	}, [markers]);
 
 	const selectMarker = (marker: MarkerEntity) => {
 		setSelectedMarker(marker);
